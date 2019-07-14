@@ -2,49 +2,19 @@
 #include <errno.h>
 
 
-#include "utl.h"
-#include "utl_file.h"
-#include "utl_str.h"
-#include "utl_str_type.h"
-#include "utl_locale.h"
+#include "../utl/utl.h"
+#include "../utl/utl_file.h"
+#include "../utl/utl_str.h"
+#include "../utl/utl_str_type.h"
+#include "../utl/utl_locale.h"
 
-#include "utl_llist.h"
-#include "utl_ini.h"
-
-int read_allw(FILE* stream)
-{
-	wint_t wc;
-	errno = 0;
-   while (WEOF != (wc = fgetwc(stream)))
-      printf("%lc", wc);
-
-	printf("\n");
-   if (EILSEQ == errno) {
-      printf("An invalid wide character was encountered.\n");
-      exit(1);
-   }
-   fclose(stream);
-   return 0;
-}
-int ex_read_w(void)
-{
-   FILE   *stream;
-
-
-   if (NULL == (stream = file_openw(L"/home/ziauddin/Projects/test_inp.txt", L"r")))
-   {
-      printf("Unable to open: \"fgetwc.dat\"\n");
-      exit(1);
-   }
-   return read_allw(stream);
-}
-
-
-
+#include "../utl/utl_llist.h"
+#include "../utl/utl_ini.h"
+#include "../utl/utl_cmdln.h"
 
 void test_wfile()
 {
-	FILE* f = file_openw(L"/home/ziauddin/Projects/test_inp.txt", L"r");
+	FILE* f = file_openw(L"~/Projects/test_inp.txt", L"r");
 
 	if (f)
 	{
@@ -73,7 +43,7 @@ void test_wfile()
 }
 void test_file()
 {
-	FILE* f = file_opena("/home/ziauddin/Projects/test_inp.txt", "r");
+	FILE* f = file_opena("~/Projects/test_inp.txt", "r");
 
 	if (f)
 	{
@@ -96,9 +66,9 @@ void test_file()
 
 void test_wstring_conv()
 {
-	wchar_t* f = L"C:/Users/ziaud/Desktop/test/str.txt";
+	wchar_t* f = L"this string will be converted to multibyte";
 	char* fa = NULL;
-	if(strw_tombs(&fa, f))
+	if (strw_tombs(&fa, f))
 	{
 		printf("%s\n", fa);
 		str_free(fa);
@@ -106,9 +76,9 @@ void test_wstring_conv()
 }
 void test_string_conv()
 {
-	char* f = "C:/Users/ziaud/Desktop/test/str.txt";
+	char* f = "this string will be converted to unicode";
 	wchar_t* fw = NULL;
-	if(str_towcs(&fw, f))
+	if (str_towcs(&fw, f))
 	{
 		wprintf(L"%ls\n", fw);
 		strw_free(fw);
@@ -116,31 +86,10 @@ void test_string_conv()
 }
 
 
-void test_str()
-{
-	/*
-	pcstr m = "My name is Ziauddin.";
-	pstr res = str_find(m, str_end(m), "My name is ", SF_MATCH_AS_WHOLE | SF_NOT | SF_REVERSE);
-	if (res)
-	{
-		printf("Matched! (res:%s)\n", res);
-	}
-	*/
-
-	printf("sizeof(int):sizeof(long) --> %d:%d\n", sizeof(int), sizeof(long));
-
-
-	printf("str_todouble(): %f\n", str_todouble("50.499926"));
-	printf("str_tofloat(): %f\n", str_tofloat("240.499926"));
-	printf("str_tolong(): %d\n", str_tolong("854", 10));
-	printf("str_tollong(): %d\n", str_tollong("4462", 10));
-	printf("str_toulong(): %d\n", str_toulong("-265", 10));
-	printf("str_toullong(): %d\n", str_toullong("12415", 10));
-}
 void test_strw()
 {
-	pcstrw m = L"My name is Ziauddin.";
-	pcstrw res = strw_find(m, strw_end(m), L"My name is ", SF_MATCH_AS_WHOLE | SF_NOT | SF_REVERSE);
+	pcstrw m = L"This is a remove string test";
+	pcstrw res = strw_find(m, strw_end(m), L"This is a ", SF_MATCH_AS_WHOLE | SF_NOT | SF_REVERSE);
 	if (res)
 	{
 		wprintf(L"Matched! (res:%ls)\n", res);
@@ -149,29 +98,33 @@ void test_strw()
 
 void test_str_remove()
 {
-	char mystr[] = "my name is ziauddin.";
-	pstr rm = str_remove(mystr, str_end(mystr), L'd');
+	char mystr[] = "This is a remove string test";
+	printf("pre_str: '%s'\n", mystr);
+	pstr rm = str_remove(mystr, str_end(mystr), "remove ", SF_MATCH_AS_WHOLE);
+	*rm = '\0';
 	printf("new_str: '%s'\n", mystr);
 }
 void test_strw_remove()
 {
-	wchar_t mystr[] = L"my name is ziauddin.";
-	pstr rm = strw_remove(mystr, strw_end(mystr), L'd');
+	wchar_t mystr[] = L"This is a remove string test";
+	printf("pre_str: '%ls'\n", mystr);
+	pstrw rm = strw_remove(mystr, strw_end(mystr), L"remove ", SF_MATCH_AS_WHOLE);
+	*rm = L'\0';
 	printf("new_str: '%ls'\n", mystr);
 }
 
 void test_str_remove2()
 {
-	char mystr[] = "my name is ziauddin.";
+	char mystr[] = "This is a remove string test";
 
 	char* sub_bgn = mystr + 11;
-	pstr rm = str_remove_range(mystr, str_end(mystr), sub_bgn, (sub_bgn+3));
+	pstr rm = str_remove_range(mystr, str_end(mystr), sub_bgn, (sub_bgn + 3));
 	*rm = '\0';
 	printf("new_str: '%s'\n", mystr);
 }
 void test_strw_remove2()
 {
-	wchar_t mystr[] = L"my name is ziauddin.";
+	wchar_t mystr[] = L"This is a remove string test";
 
 	wchar_t* sub_bgn = mystr + 11;
 	pstrw rm = strw_remove_range(mystr, strw_end(mystr), sub_bgn, (sub_bgn + 3));
@@ -202,7 +155,7 @@ void test_llist()
 
 	llist_add(pl, "zia1");
 	llist_add(pl, "zia2");
-	
+
 	llist_remove_elm(pl, llist_add(pl, "zia3"));
 
 	PLLElement e = llist_add(pl, "ziaXX");
@@ -220,16 +173,14 @@ void test_llist()
 
 
 
-
-//C:\Users\ziaud\Desktop\test\test.ini
-#define INI_FILE "C:/Users/ziaud/Desktop/test/test.ini"
-#define INI_FILEW L"C:/Users/ziaud/Desktop/test/test.ini"
+#define INI_FILE "../test.ini"
+#define INI_FILEW L"../test.ini"
 
 int test_iniw()
 {
 	wprintf(L"\n====>RUNNING INI TEST <wchar_t:%d>\n", sizeof(wchar_t));
 	PINIFileW_t file = ini_new_filew(INI_FILEW);
-	ini_comment_chars(file) = DEF_CMNT_CHARW;
+	ini_comment_chars(file) = COMMENT_WCHARS_DEFAULT;
 	if (file)
 	{
 		while (ini_readlinew(file))
@@ -259,7 +210,7 @@ int test_ini()
 {
 	printf("\n====>RUNNING INI TEST <char:%d>\n", sizeof(char));
 	PINIFileA_t file = ini_new_filea(INI_FILE);
-	ini_comment_chars(file) = DEF_CMNT_CHAR;
+	ini_comment_chars(file) = COMMENT_CHARS_DEFAULT;
 	if (file)
 	{
 		while (ini_readlinea(file))
@@ -287,14 +238,14 @@ int test_ini()
 }
 
 
+//command line test................
 
-/*
 void cmdln_testa()
 {
-	printf(L"\n====>RUNNING TEST <char:%d>\n", sizeof(char));
+	printf("\n====>RUNNING TEST <char:%d>\n", sizeof(char));
 
-	char* __myargv[6] = { "name", "zia", "age:22", "afweg", "gender:male", "agegf333" };
-	char* __mysargv[3] = { "name", "age", "gender" };
+	char* __myargv[6] = { "anm", "cat", "age:22", "afweg", "gender:male", "agegf333" };
+	char* __mysargv[3] = { "anm", "age", "gender" };
 
 	PCmdLnParserA_t parser = cmdln_parser_newa(6, __myargv, 3, __mysargv);
 
@@ -321,8 +272,8 @@ void cmdln_testw()
 {
 	wprintf(L"\n====>RUNNING TEST <wchar_t:%d>\n", sizeof(wchar_t));
 
-	wchar_t* __myargv[6] = { L"--name", L"zia", L"--age:22", L"afweg", L"--gender=male", L"agegf333" };
-	wchar_t* __mysargv[3] = { L"--name", L"--age", L"--gender" };
+	wchar_t* __myargv[6] = { L"--anm", L"cat", L"--age:22", L"afweg", L"--gender=male", L"agegf333" };
+	wchar_t* __mysargv[3] = { L"--anm", L"--age", L"--gender" };
 
 	PCmdLnParserW_t parser = cmdln_parser_neww(6, __myargv, 3, __mysargv);
 
@@ -346,13 +297,12 @@ void cmdln_testw()
 		cmdln_parser_free(parser);
 	}
 }
-int cmdln_test()
+int test_cmdln()
 {
 
 	cmdln_testa();
 	cmdln_testw();
 }
-*/
 
 
 
@@ -363,6 +313,8 @@ int cmdln_test()
 
 int main()
 {
+	test_cmdln();
+
 
 	test_str_remove();
 	test_strw_remove();

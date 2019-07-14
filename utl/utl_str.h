@@ -9,7 +9,6 @@
 
 
 #include "utl_mem.h"
-#include "utl_file.h"
 
 
 
@@ -21,6 +20,11 @@ typedef const wchar_t* 	pcstrw;
 
 #ifndef byte
 #define byte unsigned char
+
+#ifndef pbyte
+#define pbyte byte*
+#endif // !pbyte
+
 #endif // !byte
 
 
@@ -31,9 +35,6 @@ typedef const wchar_t* 	pcstrw;
 #include <strings.h>
 #include <unistd.h>
 #endif
-
-//len -> size
-//#define str_lts(len, type) (len*sizeof(type))
 
 #define SIZE_OF_WCHAR sizeof(wchar_t) 
 
@@ -116,69 +117,11 @@ typedef const wchar_t* 	pcstrw;
 #define strw_tombs_state(dest, src, max_count, pstate) wcsrtombs(dest, &src, max_count, pstate)
 
 
-size_t str_towcsn(pstrw* dest, pcstr src,  size_t max_count)
-{
-	size_t converted = 0;
-	if(dest != NULL && *dest == NULL && src != NULL && max_count > 0)
-	{
-		mbstate_t mbst = { 0 };
+size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count);
+size_t strw_tombsn(pstr* dest, pcstrw src, size_t max_count);
 
-		if (!mbsinit(&mbst))
-			memset(&mbst, 0, sizeof(mbst));
-			
-			
-		*dest = strw_new_zero(max_count);
-			
-		converted = str_towcs_state(*dest, src, max_count, &mbst);
-		if(converted <= 0)
-			free(*dest);
-	}
-	return converted;
-}
-size_t strw_tombsn(pstr* dest, pcstrw src,  size_t max_count)
-{
-	size_t converted = 0;
-	if(dest != NULL && *dest == NULL && src != NULL && max_count > 0)
-	{
-		mbstate_t mbst = {0};
-
-		if (!mbsinit(&mbst))
-			memset(&mbst, 0, sizeof(mbst));
-			
-		*dest = str_new_zero(max_count);
-		
-
-		converted = strw_tombs_state(*dest, src, max_count, &mbst);
-		if(converted <= 0)
-			free(*dest);
-	}
-	return converted;
-}
-
-size_t str_towcs(pstrw* dest, pcstr src)
-{
-	mbstate_t mbst = {0};
-
-	if (!mbsinit(&mbst))
-		memset(&mbst, 0, sizeof(mbst));
-		
-	
-	size_t len = 1 + str_towcs_state(NULL, src, 0, &mbst);
-
-	return (len > 1) ? str_towcsn(dest, src, len) : 0;
-}
-size_t strw_tombs(pstr* dest, pcstrw src)
-{
-	mbstate_t mbst = {0};
-
-	if (!mbsinit(&mbst))
-		memset(&mbst, 0, sizeof(mbst));
-		
-	
-	size_t len = 1 + strw_tombs_state(NULL, src, 0, &mbst);
-
-	return (len > 1) ? strw_tombsn(dest, src, len) : 0;
-}
+size_t str_towcs(pstrw* dest, pcstr src);
+size_t strw_tombs(pstr* dest, pcstrw src);
 
 
 //#define str_tostrw_state str_towcs_state
@@ -190,44 +133,8 @@ size_t strw_tombs(pstr* dest, pcstrw src)
 #define str_tostrw str_towcs
 #define strw_tostr strw_tombs
 
-
-
-
-//get end pt
-/*
-pstr str_end(pstr begin)
-{
-	if (begin)
-	{
-		size_t len = str_len(begin);
-		return (len > 0) ? (begin + (len - 1)) : NULL;
-	}
-	return NULL;
-}
-pstrw strw_end(pstrw begin)
-{
-	if (begin)
-	{
-		size_t len = strw_len(begin);
-		return (len > 0) ? (begin + (len - 1)) : NULL;
-	}
-	return NULL;
-}
-*/
-
-
-pstr str_end(pstr begin)
-{
-	for (; *begin; begin++) {}
-	return begin;
-	//return --begin;
-}
-pstrw strw_end(pstrw begin)
-{
-	for (; *begin; begin++) {}
-	return begin;
-	//return --begin;
-}
+pstr str_end(pstr begin);
+pstrw strw_end(pstrw begin);
 
 
 
@@ -251,125 +158,9 @@ pstrw strw_end(pstrw begin)
 
 //find char(s) from string
 
-pstrw strw_find(pstrw begin, pstrw end, pcstrw mtchchars, byte sfflags)
-{
-	if (begin == NULL || end == NULL || mtchchars == NULL)
-		return NULL;
+pstrw strw_find(pstrw begin, pstrw end, pcstrw mtchchars, byte sfflags);
 
-	size_t len = 0;
-	size_t lenofmtch = strw_len(mtchchars);
-
-
-	
-	int _cmp;
-	bool rev = sfflags & SF_REVERSE;
-	for (
-		pstrw s = (rev ? end : begin);
-		s != (rev ? begin : end); 
-		rev ? s-- : s++
-		)
-	{
-		if (sfflags & SF_MATCH_AS_WHOLE)
-		{
-			if (rev)
-			{
-				len = strw_len(s);// make sure total len is same match-str len; otherwise it will just compare the end char.
-				if (len < lenofmtch)
-				{
-					len = strw_len(begin);
-					if (len < lenofmtch)
-						return NULL;
-					s = s - lenofmtch + 1;
-					//len = strw_len(s);
-				}
-			}
-			
-			_cmp = (sfflags & SF_NO_CASE_SENSITIVE ? strw_cmpni(s, mtchchars, lenofmtch) : strw_cmpn(s, mtchchars, lenofmtch));
-			if (sfflags & SF_NOT)
-			{
-				if (_cmp != 0)
-					return s;
-			}
-			else if (_cmp == 0)
-				return s;
-		}
-		else
-		{
-			for (const wchar_t* c = mtchchars; *c; c++)
-			{
-				_cmp = (sfflags & SF_NO_CASE_SENSITIVE ? strw_cmpni(s, c, 1) : *s - *c);
-				if (sfflags & SF_NOT)
-				{
-					if (_cmp != 0)
-						return s;
-				}
-				else if (_cmp == 0)
-					return s;
-			}
-		}
-	}
-	return NULL;
-}
-
-pstr str_find(pstr begin, pstr end, pcstr mtchchars, byte sfflags)
-{
-	if (begin == NULL || end == NULL || mtchchars == NULL)
-		return NULL;
-
-	size_t len = 0;
-	size_t lenofmtch = str_len(mtchchars);
-
-
-
-	int _cmp;
-	bool rev = sfflags & SF_REVERSE;
-	for (
-		pstr s = (rev ? end : begin);
-		s != (rev ? begin : end); 
-		rev ? s-- : s++
-		)
-	{
-		if (sfflags & SF_MATCH_AS_WHOLE)
-		{
-			if (rev)
-			{
-				len = str_len(s);// make sure total len is same match-str len; otherwise it will just compare the end char.
-				if (len < lenofmtch)
-				{
-					len = str_len(begin);
-					if (len < lenofmtch)
-						return NULL;
-					s = s - lenofmtch + 1;
-					//len = str_len(s);
-				}
-			}
-
-			_cmp = (sfflags & SF_NO_CASE_SENSITIVE ? str_cmpni(s, mtchchars, lenofmtch) : str_cmpn(s, mtchchars, lenofmtch));
-			if (sfflags & SF_NOT)
-			{
-				if (_cmp != 0)
-					return s;
-			}
-			else if (_cmp == 0)
-				return s;
-		}
-		else
-		{
-			for (const char* c = mtchchars; *c; c++)
-			{
-				_cmp = (sfflags & SF_NO_CASE_SENSITIVE ? str_cmpni(s, c, 1) : *s - *c);
-				if (sfflags & SF_NOT)
-				{
-					if (_cmp != 0)
-						return s;
-				}
-				else if (_cmp == 0)
-					return s;
-			}
-		}
-	}
-	return NULL;
-}
+pstr str_find(pstr begin, pstr end, pcstr mtchchars, byte sfflags);
 
 /*
 pstrw strw_find_not_of(pstrw begin, pstrw end, pcstrw mtchchars)
@@ -437,76 +228,15 @@ pstr str_find_rev_not_of(pstr begin, pstr end, pcstr mtchchars)
 
 //remove a char or char range from whole string
 
-pstr str_remove_ch(pstr begin, pstr end, const char c)
-{
-	for (char* i = begin; i != end; i++, begin++)
-	{
-		if (*i != c)
-			* begin = *i;
-		else
-			begin--;
-		
-	}
+pstr str_remove_ch(pstr begin, pstr end, const char c);
+pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c);
 
 
-	return begin;
-}
-pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c)
-{
-	for (wchar_t* i = begin; i != end; i++, begin++)
-	{
-		if (*i != c)
-			* begin = *i;
-		else
-			begin--;
+pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end);
+pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end);
 
-	}
-
-
-	return begin;
-}
-
-
-pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
-{
-	for (char* i = begin; i != end; i++, begin++)
-	{
-		if (i == sub_begin)
-			i = sub_end;
-		*begin = *i;
-	}
-
-
-	return begin;
-}
-pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
-{
-	for (wchar_t* i = begin; i != end; i++, begin++)
-	{
-		if (i == sub_begin)
-			i = sub_end;
-		*begin = *i;
-	}
-
-
-	return begin;
-}
-
-//NOT___TESTED____
-pstr str_remove(pstr begin, pstr end, pcstr str)
-{
-	pstr sub_begin = str_find(begin, end, str, SF_MATCH_AS_WHOLE);
-	pstr sub_end = sub_begin+str_len(str);
-	
-	return str_remove_range(begin, end, sub_begin, sub_end);
-}
-pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw)
-{
-	pstrw sub_begin = strw_find(begin, end, strw, SF_MATCH_AS_WHOLE);
-	pstrw sub_end = sub_begin+strw_len(strw);
-	
-	return strw_remove_range(begin, end, sub_begin, sub_end);
-}
+pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags);
+pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
 
 
 
@@ -517,9 +247,11 @@ pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw)
 #define str_gets(str, count, stream) file_getsa(buffer, count, stream)
 #define strw_gets(str, count, stream) file_getsw(buffer, count, stream)
 
+#ifdef UTL_FILE
 //get line
 #define str_getline(stream)					file_readlinea(stream)
 #define strw_getline(stream)				file_readlinew(stream)
+#endif
 
 //scan string
 #define str_scan(str, format, ...)			sscanf(str, format, ...)

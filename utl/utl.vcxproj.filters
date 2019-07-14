@@ -53,7 +53,37 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="utl.c">
+    <ClCompile Include="utl_locale.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_mem.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_rand.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_str.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_str_type.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_type.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_llist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_ini.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_file.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_env.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_cmdln.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

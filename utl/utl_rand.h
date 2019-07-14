@@ -10,18 +10,4 @@
 
 
 #define rand_get_random(min, max) (rand() % (min - (max + 1)) + min)
-
-
-	/*
-	inline int GetRandom(int min = 0, int max = 9)
-	{
-		if (min < max)
-		{
-			return (rand() % (min - (max + 1)) + min);
-		}
-		return -1;
-	}
-	*/
-
 #endif // !UTL_RAND
-

@@ -3,6 +3,7 @@
 
 
 #if _WIN32 || _WIN64
+#define WIN
 #if _WIN64
 #define ENV64
 #else
