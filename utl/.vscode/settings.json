@@ -1,0 +1,13 @@
+{
+    "files.associations": {
+        "string.h": "c",
+        "stdbool.h": "c",
+        "utl_mem.h": "c",
+        "strings.h": "c",
+        "wctype.h": "c",
+        "wchar.h": "c",
+        "cwchar": "c",
+        "stdio.h": "c",
+        "errno.h": "c"
+    }
+}
