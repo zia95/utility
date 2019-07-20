@@ -4,7 +4,7 @@
 //#define _CRT_SECURE_NO_WARNINGS 1
 
 #pragma warning(disable:4996)
-
+/*
 #ifndef _SLIB
 
 
@@ -28,7 +28,8 @@
 #define LIB LIB_PATH LIB_NAME
 
 #pragma comment(lib, LIB)
-#endif // _SLIB
 
+#endif // _SLIB
+*/
 
 #endif // !UTL

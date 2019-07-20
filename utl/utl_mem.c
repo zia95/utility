@@ -1,5 +1,14 @@
 #include "utl_mem.h"
 
+
+
+void* mem_recalloc(void* block, size_t count, size_t size)
+{
+	return mem_realloc(block, count * size);
+}
+
+
+
 void* mem_alloc_zero(size_t size)
 {
 	void* p = mem_alloc(size);
@@ -10,6 +19,7 @@ void* mem_calloc_zero(size_t count, size_t size)
 	void* p = mem_calloc(count, size);
 	return p ? mem_zero(p, size) : NULL;
 }
+
 
 
 void* mem_dup(void* mem, size_t size)

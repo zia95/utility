@@ -45,9 +45,17 @@ typedef const wchar_t* 	pcstrw;
 #define str_new_zero(len) (char*)mem_alloc_zero(len);
 #define strw_new_zero(len) (wchar_t*)mem_calloc_zero(len, SIZE_OF_WCHAR)
 
+//reloc
+#define str_realloc(str, size) (char*)mem_realloc(str, size)
+#define strw_realloc(str, size) (wchar_t*)mem_recalloc(str, size, SIZE_OF_WCHAR)
+
 //str free
 #define str_free(str) mem_free(str)
 #define strw_free(str) mem_free(str)
+
+//str set
+#define str_set(str, c, size) mem_set(str, c, size)
+#define strw_set str_set
 
 //duplicate
 #define str_dup(str, len) (char*)mem_dup(str, len);

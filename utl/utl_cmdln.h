@@ -12,15 +12,32 @@
 #include "utl.h"
 #include "utl_str.h"
 
+#ifdef CMDLN_NC
+#define CMDLN_STR_CMP(X,Y)  str_cmpi(X,Y)
+#define CMDLN_STR_CMPN(X,Y,L)  str_cmpni(X,Y,L)
+
+#define CMDLN_STRW_CMP(X,Y)  strw_cmpi(X,Y)
+#define CMDLN_STRW_CMPN(X,Y,L)  strw_cmpni(X,Y,L)
+#else
+#define CMDLN_STR_CMP(X,Y)  str_cmp(X,Y)
+#define CMDLN_STR_CMPN(X,Y,L)  str_cmpn(X,Y,L)
+
+#define CMDLN_STRW_CMP(X,Y)  strw_cmp(X,Y)
+#define CMDLN_STRW_CMPN(X,Y,L)  strw_cmpn(X,Y,L)
+#endif //!CMDLN_NC
+
+
 typedef struct KEY_PAIRA
 {
 	char* key;
 	char* val;
+	int kidx;
 } KeypairA_t, * PKeypairA_t;
 typedef struct KEY_PAIRW
 {
 	wchar_t* key;
 	wchar_t* val;
+	int kidx;
 } KeypairW_t, * PKeypairW_t;
 
 typedef struct COMMAND_LINE_PARSERA
@@ -67,6 +84,7 @@ PCmdLnParserW_t cmdln_parser_neww(int argc, wchar_t** argv, int sargc, const wch
 #define cmdln_curr_idx(pParser) pParser->argc_idx
 #define cmdln_curr_arg(pParser) pParser->argv[cmdln_curr_idx(pParser)]
 #define cmdln_first(pParser) (pParser->argc_idx = 0)
+#define cmdln_reset cmdln_first
 #define cmdln_next(pParser) (++pParser->argc_idx < pParser->argc)
 
 PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser);

@@ -61,10 +61,11 @@ PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser)
 
 		for (int i = 0; i < pParser->sargc; i++)
 		{
-			const char* scur = pParser->sargv[i];
-			if (str_cmpi(cur, scur) == 0)
+			pParser->result.kidx = i;
+			pParser->result.key = pParser->sargv[i];
+
+			if (CMDLN_STR_CMP(cur, pParser->result.key) == 0)
 			{
-				pParser->result.key = cur;
 				if (++pParser->argc_idx < pParser->argc)
 				{
 					pParser->result.val = pParser->argv[pParser->argc_idx];
@@ -77,29 +78,33 @@ PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser)
 			{
 				char* sep = str_find(cur, str_end(cur), ":=", SF_NONE);
 
+				
+
 				if (sep)
 				{
-					size_t scur_len = str_len(scur);
-					if (str_cmpn(cur, scur, scur_len) == 0)
+					size_t scur_len = str_len(pParser->result.key);
+					if (CMDLN_STR_CMPN(cur, pParser->result.key, scur_len) == 0)
 					{
-						//buffer must be created because 'argv' memory is write protected (i.e. read-only). 
+						//buffer must be created because 'argv' memory is write protected (i.e. read-only).
+
+						// checking buffer len ---- memory clear ---- mem reloc --- it will increase performance. maybe?? 
+						// nonetheless lets just go with free() and alloc()
 						if (pParser->buffer)
 						{
 							str_free(pParser->buffer);
 							pParser->buffer = NULL;
 						}
 
+
+						cur = (cur + scur_len + 1);// adding '+1' for seprator
 						pParser->buff_len = str_len(cur);
-						pParser->buffer = str_new_zero(pParser->buff_len + 1); //(char*)calloc(pParser->buff_len + 1, sizeof(char));
 
-						str_cpy(pParser->buffer, cur);
+						if (pParser->buff_len <= 0)
+							return NULL;
 
-						char* bsep = (pParser->buffer + scur_len);
+						pParser->buffer = str_dup(cur, pParser->buff_len);
 
-						*bsep = '\0';
-
-						pParser->result.key = pParser->buffer;
-						pParser->result.val = ++bsep;
+						pParser->result.val = pParser->buffer;
 						return cmdln_parser_get_result(pParser);
 					}
 				}
@@ -119,10 +124,10 @@ PKeypairW_t cmdln_parsew(PCmdLnParserW_t pParser)
 
 		for (int i = 0; i < pParser->sargc; i++)
 		{
-			const wchar_t* scur = pParser->sargv[i];
-			if (strw_cmpi(cur, scur) == 0)//form --> <arg1> <arg2>
+			pParser->result.kidx = i;
+			pParser->result.key = pParser->sargv[i];
+			if (CMDLN_STRW_CMP(cur, pParser->result.key) == 0)//form --> <arg1> <arg2>
 			{
-				pParser->result.key = cur;
 				if (++pParser->argc_idx < pParser->argc)
 				{
 					pParser->result.val = pParser->argv[pParser->argc_idx];
@@ -137,28 +142,28 @@ PKeypairW_t cmdln_parsew(PCmdLnParserW_t pParser)
 
 				if (sep)
 				{
-					int scur_len = strw_len(scur);
-					if (strw_cmpn(cur, scur, scur_len) == 0)
+					int scur_len = strw_len(pParser->result.key);
+					if (CMDLN_STRW_CMPN(cur, pParser->result.key, scur_len) == 0)
 					{
 						//buffer must be created because 'argv' memory is write protected (i.e. read-only). 
+						// checking buffer len ---- memory clear ---- mem reloc --- it will increase performance. maybe??
+						// nonetheless lets just go with free() and alloc()
 						if (pParser->buffer)
 						{
-							free(pParser->buffer);
+							strw_free(pParser->buffer);
 							pParser->buffer = NULL;
 						}
 
+						cur = (cur + scur_len + 1);// adding '+1' for seprator
 						pParser->buff_len = strw_len(cur);
-						pParser->buffer = strw_new_zero(pParser->buff_len + 1);// (wchar_t*)calloc(pParser->buff_len + 1, sizeof(wchar_t));
+
+						if (pParser->buff_len <= 0)
+							return NULL;
 
 
-						strw_cpy(pParser->buffer, cur);
+						pParser->buffer = strw_dup(cur, pParser->buff_len);
 
-						wchar_t* bsep = (pParser->buffer + scur_len);
-
-						*bsep = L'\0';
-
-						pParser->result.key = pParser->buffer;
-						pParser->result.val = ++bsep;
+						pParser->result.val = pParser->buffer;
 						return cmdln_parser_get_result(pParser);
 					}
 				}

@@ -26,6 +26,9 @@
 #define mem_sort(base, nbasecount, nbasesize, cbcmp) qsort(base, nbasecount, nbasesize, cbcmp)
 
 
+void* mem_recalloc(void* block, size_t count, size_t size);
+
+
 void* mem_alloc_zero(size_t size);
 void* mem_calloc_zero(size_t count, size_t size);
 
