@@ -46,12 +46,12 @@ typedef struct COMMAND_LINE_PARSERA
 	char** argv;
 
 	int sargc;
-	const char** sargv;
+	char** sargv;
 
 	int argc_idx;
 
-	size_t buff_len;
-	char* buffer;
+	//size_t buff_len;
+	//char* buffer;
 
 	KeypairA_t result;
 } CmdLnParserA_t, * PCmdLnParserA_t;
@@ -61,12 +61,12 @@ typedef struct COMMAND_LINE_PARSERW
 	wchar_t** argv;
 
 	int sargc;
-	const wchar_t** sargv;
+	wchar_t** sargv;
 
 	int argc_idx;
 
-	size_t buff_len;
-	wchar_t* buffer;
+	//size_t buff_len;
+	//wchar_t* buffer;
 
 	KeypairW_t result;
 } CmdLnParserW_t, * PCmdLnParserW_t;
@@ -79,7 +79,8 @@ PCmdLnParserW_t cmdln_parser_neww(int argc, wchar_t** argv, int sargc, const wch
 
 #define cmdln_parser_get_result(pParser) &pParser->result
 #define cmdln_parser_finished(pParser) !(pParser->argc_idx < pParser->argc)
-#define cmdln_parser_free(pParser) if (pParser->buffer) { free(pParser->buffer); } free(pParser);
+#define cmdln_parser_free(pParser) free(pParser);
+//#define cmdln_parser_free(pParser) if (pParser->buffer) { free(pParser->buffer); } free(pParser);
 
 #define cmdln_curr_idx(pParser) pParser->argc_idx
 #define cmdln_curr_arg(pParser) pParser->argv[cmdln_curr_idx(pParser)]

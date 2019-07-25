@@ -51,6 +51,12 @@
     <ClInclude Include="utl_cmdln.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utl_assert.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="utl_error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utl_locale.c">

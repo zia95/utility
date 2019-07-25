@@ -80,7 +80,6 @@ typedef const wchar_t* 	pcstrw;
 #define str_catn(dest, src, len) strncat(dest, src, len)
 #define strw_catn(dest, src, len) wcsncat(dest, src, len)
 
-
 //str compare
 #define str_cmpn(str1, str2, len) strncmp(str1, str2, len)
 #define strw_cmpn(str1, str2, len) wcsncmp(str1, str2, len)
@@ -88,14 +87,40 @@ typedef const wchar_t* 	pcstrw;
 #define str_cmp(str1, str2) strcmp(str1, str2)
 #define strw_cmp(str1, str2) wcscmp(str1, str2)
 
+//Locate a string in string
+#define str_substr(str, substr) strstr(str, substr)
+char* str_substrr(const char* str, const char* substr);
 
+#define strw_substr(str, substr) wcsstr(str, substr)
+wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
+
+//Locate a char in string
+#define str_subchr(str, subchr)		strchr(str, subchr)
+#define str_subchrr(str, subchr)	strrchr(str, subchr)
+
+#define strw_subchr(str, subchr)	wcschr(str, subchr)
+#define strw_subchrr(str, subchr)	wcsrchr(str, subchr)
+
+//Locate characters in string
+#define str_subchrs(str, subchrs) strpbrk(str, subchrs)
+char* str_subchrsr(const char* str, const char* subchrs);
+
+#define strw_subchrs(str, subchrs) wcspbrk(str, subchrs)
+wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
+
+//seprate str by tokens i.e. delimiters
+#define str_token(str, delimiters, contxt) strtok_s(str, delimiters, contxt)
+#define strw_token(str, delimiters, contxt) wcstok(str, delimiters, contxt)
 
 #if _WIN32 || _WIN64
+//compare
 #define str_cmpni(str1, str2, len) _strnicmp(str1, str2, len)
 #define strw_cmpni(str1, str2, len) _wcsnicmp(str1, str2, len)
 
 #define str_cmpi(str1, str2) _stricmp(str1, str2)
 #define strw_cmpi(str1, str2) _wcsicmp(str1, str2)
+
+
 #else
 
 #define str_cmpni(str1, str2, len) strncasecmp(str1, str2, len)
@@ -103,6 +128,8 @@ typedef const wchar_t* 	pcstrw;
 
 #define str_cmpi(str1, str2)  strcasecmp(str1, str2)
 #define strw_cmpi(str1, str2) wcscasecmp(str1, str2)
+
+//#error IMPLEMENT strstr , subchr , subchrs , strtok 
 #endif
 
 //str is equal?
@@ -145,7 +172,9 @@ pstr str_end(pstr begin);
 pstrw strw_end(pstrw begin);
 
 
-
+#ifdef UTL_ERROR
+#define str_error(err) strerror(err)
+#endif
 
 
 
@@ -156,8 +185,9 @@ pstrw strw_end(pstrw begin);
 #define SF_NORMAL SF_NONE
 // turn off case sensitivity
 #define SF_NO_CASE_SENSITIVE 1 << 0
-//match whole string i.e. return sucessful if whole sequence of char matches
+//match whole string i.e. return sucessful if substring matches
 #define SF_MATCH_AS_WHOLE 1 << 1
+#define SF_SUB_STR SF_MATCH_AS_WHOLE
 // return if does NOT matches
 #define SF_NOT 1 << 2
 // reverse search

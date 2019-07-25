@@ -15,8 +15,8 @@ PCmdLnParserA_t cmdln_parser_newa(int argc, char** argv, int sargc, const char**
 
 			pParser->argc_idx = 0;
 
-			pParser->buff_len = 0;
-			pParser->buffer = NULL;
+			//pParser->buff_len = 0;
+			//pParser->buffer = NULL;
 
 			memset(&pParser->result, 0, sizeof(pParser->result));
 
@@ -39,8 +39,8 @@ PCmdLnParserW_t cmdln_parser_neww(int argc, wchar_t** argv, int sargc, const wch
 
 			pParser->argc_idx = 0;
 
-			pParser->buff_len = 0;
-			pParser->buffer = NULL;
+			//pParser->buff_len = 0;
+			//pParser->buffer = NULL;
 
 			memset(&pParser->result, 0, sizeof(pParser->result));
 
@@ -85,6 +85,9 @@ PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser)
 					size_t scur_len = str_len(pParser->result.key);
 					if (CMDLN_STR_CMPN(cur, pParser->result.key, scur_len) == 0)
 					{
+						pParser->result.val = (cur + scur_len + 1);
+						return cmdln_parser_get_result(pParser);
+						/*
 						//buffer must be created because 'argv' memory is write protected (i.e. read-only).
 
 						// checking buffer len ---- memory clear ---- mem reloc --- it will increase performance. maybe?? 
@@ -106,6 +109,7 @@ PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser)
 
 						pParser->result.val = pParser->buffer;
 						return cmdln_parser_get_result(pParser);
+						*/
 					}
 				}
 			}
@@ -142,9 +146,13 @@ PKeypairW_t cmdln_parsew(PCmdLnParserW_t pParser)
 
 				if (sep)
 				{
-					int scur_len = strw_len(pParser->result.key);
+					size_t scur_len = strw_len(pParser->result.key);
 					if (CMDLN_STRW_CMPN(cur, pParser->result.key, scur_len) == 0)
 					{
+						pParser->result.val = (cur + scur_len + 1);
+						return cmdln_parser_get_result(pParser);
+
+						/*
 						//buffer must be created because 'argv' memory is write protected (i.e. read-only). 
 						// checking buffer len ---- memory clear ---- mem reloc --- it will increase performance. maybe??
 						// nonetheless lets just go with free() and alloc()
@@ -165,6 +173,7 @@ PKeypairW_t cmdln_parsew(PCmdLnParserW_t pParser)
 
 						pParser->result.val = pParser->buffer;
 						return cmdln_parser_get_result(pParser);
+						*/
 					}
 				}
 			}

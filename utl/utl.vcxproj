@@ -164,9 +164,11 @@
     <ClCompile Include="utl_type.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utl_assert.h" />
     <ClInclude Include="utl.h" />
     <ClInclude Include="utl_cmdln.h" />
     <ClInclude Include="utl_env.h" />
+    <ClInclude Include="utl_error.h" />
     <ClInclude Include="utl_file.h" />
     <ClInclude Include="utl_ini.h" />
     <ClInclude Include="utl_llist.h" />

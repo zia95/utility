@@ -1,5 +1,41 @@
 #include "utl_str.h"
 
+/*
+char* str_substrr(const char* str, const char* substr)
+{
+	char* ptr, * last = NULL;
+	ptr = (char*)str;
+	while ((ptr = str_substr(ptr, substr))) last = ptr++;
+	return last;
+}
+*/
+char* str_substrr(const char* str, const char* substr)
+{
+	char* last = NULL;
+	while ((str = str_substr(str, substr))) last = str++;
+	return last;
+}
+wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr)
+{
+	wchar_t* last = NULL;
+	while ((str = strw_substr(str, substr))) last = str++;
+	return last;
+}
+
+char* str_subchrsr(const char* str, const char* subchrs)
+{
+	char* last = NULL;
+	while ((str = str_subchrs(str, subchrs))) last = str++;
+	return last;
+}
+
+wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs)
+{
+	wchar_t* last = NULL;
+	while ((str = strw_subchrs(str, subchrs))) last = str++;
+	return last;
+}
+
 size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count)
 {
 	size_t converted = 0;
@@ -77,26 +113,6 @@ pstrw strw_end(pstrw begin)
 	return begin;
 	//return --begin;
 }
-
-
-
-
-
-
-// find string_chars flags
-
-//sf_none = normal search i.e. case sensitive, forward search, char by char match not whole string
-#define SF_NONE 0
-#define SF_NORMAL SF_NONE
-// turn off case sensitivity
-#define SF_NO_CASE_SENSITIVE 1 << 0
-//match whole string i.e. return sucessful if whole sequence of char matches
-#define SF_MATCH_AS_WHOLE 1 << 1
-// return if does NOT matches
-#define SF_NOT 1 << 2
-// reverse search
-#define SF_REVERSE 1 << 3
-
 
 //find char(s) from string
 
