@@ -40,6 +40,7 @@ typedef struct KEY_PAIRW
 	int kidx;
 } KeypairW_t, * PKeypairW_t;
 
+
 typedef struct COMMAND_LINE_PARSERA
 {
 	int argc;

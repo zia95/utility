@@ -41,12 +41,24 @@ void llist_add_range(PLList pl, size_t range, void* pfirst, ...);
 
 PLLElement llist_get(PLList pl, size_t idx);
 
-#define llist_data(pelm, pdata) pelm->pdata = pdata;
+//#define llist_data(pelm, pdata) pelm->pdata = pdata;
+
+#define llist_count(pl) pl->count
 
 void* llist_remove(PLList pl, size_t idx);
 void* llist_remove_elm(PLList pl, PLLElement pelm);
 
-typedef void (__cdecl* llist_iter_cb)(PLList pl, size_t idx, PLLElement pelm);
+
+
+#ifdef __GNUC__
+#define __cdecl_call __attribute__ ((__cdecl__))
+#else
+#define __cdecl_call __cdecl
+#endif
+
+
+
+typedef void (__cdecl_call* llist_iter_cb)(PLList pl, size_t idx, PLLElement pelm);
 
 void llist_iter(PLList pl, llist_iter_cb iter);
 

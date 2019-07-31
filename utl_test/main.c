@@ -2,6 +2,7 @@
 #include <errno.h>
 
 
+
 #include "../utl/utl.h"
 #include "../utl/utl_file.h"
 #include "../utl/utl_str.h"
@@ -11,6 +12,10 @@
 #include "../utl/utl_llist.h"
 #include "../utl/utl_ini.h"
 #include "../utl/utl_cmdln.h"
+
+
+#pragma comment(lib, "D:/Projects/utl/Debug/utl.lib")
+
 
 void test_wfile()
 {
@@ -131,6 +136,24 @@ void test_strw_remove2()
 	*rm = L'\0';
 	printf("new_str: '%ls'\n", mystr);
 }
+
+void test_str_remove_chrs()
+{
+	char mystr[] = "This is a remove string test";
+	printf("pre_str: '%s'\n", mystr);
+	pstr rm = str_remove_chs(mystr, str_end(mystr), "is");
+	*rm = '\0';
+	printf("new_str: '%s'\n", mystr);
+}
+void test_strw_remove_chrs()
+{
+	wchar_t mystr[] = L"This is a remove string test";
+	printf("pre_str: '%ls'\n", mystr);
+	pstrw rm = strw_remove_chs(mystr, strw_end(mystr), L"is");
+	*rm = L'\0';
+	printf("new_str: '%ls'\n", mystr);
+}
+
 
 void  __llist_iter_cb(PLList pl, size_t idx, PLLElement pelm)
 {
@@ -313,13 +336,17 @@ int test_cmdln()
 
 int main()
 {
-	test_cmdln();
+	test_str_remove_chrs();
+	test_strw_remove_chrs();
+
+
+	/*test_cmdln();
 
 
 	test_str_remove();
 	test_strw_remove();
 	test_str_remove2();
-	test_strw_remove2();
+	test_strw_remove2();*/
 
 	//test_ini();
 	//test_iniw();

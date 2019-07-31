@@ -200,82 +200,40 @@ pstrw strw_find(pstrw begin, pstrw end, pcstrw mtchchars, byte sfflags);
 
 pstr str_find(pstr begin, pstr end, pcstr mtchchars, byte sfflags);
 
-/*
-pstrw strw_find_not_of(pstrw begin, pstrw end, pcstrw mtchchars)
-{
-	for (wchar_t* s = begin; s != end; s++)
-		for (const wchar_t* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-pstrw strw_find_rev(pstrw begin, pstrw end, pcstrw mtchchars)
-{
-	for (wchar_t* s = end; s != begin; s--)
-		for (const wchar_t* c = mtchchars; *c; c++)
-			if (*s == *c)
-				return s;
-	return NULL;
-}
-pstrw strw_find_rev_not_of(pstrw begin, pstrw end, pcstrw mtchchars)
-{
-	for (wchar_t* s = end; s != begin; s--)
-		for (const wchar_t* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-*/
-/*
-pstr str_find(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = begin; s != end; s++)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s == *c)
-				return s;
-	return NULL;
-}
-pstr str_find_not_of(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = begin; s != end; s++)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-pstr str_find_rev(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = end; s != begin; s--)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s == *c)
-				return s;
-	return NULL;
-}
-pstr str_find_rev_not_of(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = end; s != begin; s--)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-*/
-
-
-
-
 //remove a char or char range from whole string
 
 pstr str_remove_ch(pstr begin, pstr end, const char c);
 pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c);
 
 
+#ifdef __GNUC__
+#define __cdecl_call __attribute__ ((__cdecl__))
+#else
+#define __cdecl_call __cdecl
+#endif
+
+
+typedef bool (__cdecl_call* str_rmv_iter_cb)(int ch);
+
+typedef bool (__cdecl_call* strw_rmv_iter_cb)(wint_t ch);
+
+pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb);
+pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb);
+
+
+
+pstr str_remove_chs(pstr begin, pstr end, const char* chrs);
+pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs);
+
+
 pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end);
 pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end);
 
+#define str_remove_at(off, end, count) str_remove_range(off, end, off, (off+(count-1)))
+#define strw_remove_at(off, end, count) strw_remove_range(off, end, off, (off+(count-1)))
+
 pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags);
 pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
-
 
 
 
@@ -291,12 +249,15 @@ pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
 #define strw_getline(stream)				file_readlinew(stream)
 #endif
 
-//scan string
-#define str_scan(str, format, ...)			sscanf(str, format, ...)
-#define strw_scan(str, format, ...)			swscanf(str, format, ...)
+
+#define str_scan			sscanf
+#define strw_scan			swscanf
 
 //format string
-#define str_format(str, len, format, ...)	snprintf(str, len, format, ...)
-#define strw_format(str, len, format, ...)	swprintf(str, len, format, ...)
+#define str_format			snprintf
+#define strw_format			swprintf
+
+
+
 
 #endif // !UTL_STR

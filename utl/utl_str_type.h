@@ -52,11 +52,7 @@ ullong strw_try_toullong(pcstrw str, int base, bool* successful);
 #define strw_toulong	(str, base) strw_try_toulong(str, base, NULL)
 #define strw_toullong	(str, base) strw_try_toullong(str, base, NULL)
 
-#ifndef UTL_STR
-#define str_format		(str, len, format, ...)	snprintf(str, len, format, ...)
-#define strw_format		(str, len, format, ...)	swprintf(str, len, format, ...)
-#endif
-
+#ifdef UTL_STR
 
 // string to type x
 #define str_tostr_float		(str, len, f)	str_format(str, len, "%f", f)
@@ -68,6 +64,7 @@ ullong strw_try_toullong(pcstrw str, int base, bool* successful);
 #define strw_tostr_decimal	(str, len, d)	strw_format(str, len, L"%d", d)
 #define strw_tostr_hex		(str, len, x)	strw_format(str, len, L"%x", x)
 #define strw_tostr_octate	(str, len, o)	strw_format(str, len, L"%o", o)
+#endif
 
 
 

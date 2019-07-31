@@ -34,6 +34,8 @@
 FILE* file_openw(const wchar_t* file, const wchar_t* mode);
 #endif
 
+bool file_exista(const char* file);
+bool file_existw(const wchar_t* file);
 
 #define file_close(file) fclose(file)
 

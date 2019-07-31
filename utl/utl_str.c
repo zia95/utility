@@ -236,69 +236,6 @@ pstr str_find(pstr begin, pstr end, pcstr mtchchars, byte sfflags)
 	return NULL;
 }
 
-/*
-pstrw strw_find_not_of(pstrw begin, pstrw end, pcstrw mtchchars)
-{
-	for (wchar_t* s = begin; s != end; s++)
-		for (const wchar_t* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-pstrw strw_find_rev(pstrw begin, pstrw end, pcstrw mtchchars)
-{
-	for (wchar_t* s = end; s != begin; s--)
-		for (const wchar_t* c = mtchchars; *c; c++)
-			if (*s == *c)
-				return s;
-	return NULL;
-}
-pstrw strw_find_rev_not_of(pstrw begin, pstrw end, pcstrw mtchchars)
-{
-	for (wchar_t* s = end; s != begin; s--)
-		for (const wchar_t* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-*/
-/*
-pstr str_find(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = begin; s != end; s++)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s == *c)
-				return s;
-	return NULL;
-}
-pstr str_find_not_of(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = begin; s != end; s++)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-pstr str_find_rev(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = end; s != begin; s--)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s == *c)
-				return s;
-	return NULL;
-}
-pstr str_find_rev_not_of(pstr begin, pstr end, pcstr mtchchars)
-{
-	for (char* s = end; s != begin; s--)
-		for (const char* c = mtchchars; *c; c++)
-			if (*s != *c)
-				return s;
-	return NULL;
-}
-*/
-
-
-
 
 //remove a char or char range from whole string
 
@@ -312,8 +249,7 @@ pstr str_remove_ch(pstr begin, pstr end, const char c)
 			begin--;
 
 	}
-
-
+	*begin = '\0';
 	return begin;
 }
 pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c)
@@ -326,11 +262,81 @@ pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c)
 			begin--;
 
 	}
-
-
+	*begin = L'\0';
 	return begin;
 }
 
+pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb)
+{
+	for (char* i = begin; i != end; i++, begin++)
+	{
+		if (iter_cb(*i) == 0)
+			* begin = *i;
+		else
+			begin--;
+
+	}
+
+	*begin = '\0';
+	return begin;
+}
+pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb)
+{
+	for (wchar_t* i = begin; i != end; i++, begin++)
+	{
+		if (iter_cb(*i) == 0)
+			* begin = *i;
+		else
+			begin--;
+
+	}
+
+	*begin = L'\0';
+	return begin;
+}
+
+pstr str_remove_chs(pstr begin, pstr end, const char* chrs)
+{
+	char* mtch;
+	for (char* i = begin; i != end; i++, begin++)
+	{
+		mtch = NULL;
+		for (mtch = chrs; *mtch; mtch++)
+		{
+			if (*i == *mtch)
+			{
+				begin--;
+				break;
+			}
+		}
+		if (!*mtch)//if not mtched
+			* begin = *i;
+	}
+
+	*begin = '\0';
+	return begin;
+}
+pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs)
+{
+	wchar_t* mtch;
+	for (wchar_t* i = begin; i != end; i++, begin++)
+	{
+		mtch = NULL;
+		for (mtch = chrs; *mtch; mtch++)
+		{
+			if (*i == *mtch)
+			{
+				begin--;
+				break;
+			}
+		}
+		if (!*mtch)//if not mtched
+			* begin = *i;
+	}
+
+	*begin = L'\0';
+	return begin;
+}
 
 pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
 {
@@ -341,7 +347,7 @@ pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
 		*begin = *i;
 	}
 
-
+	*begin = '\0';
 	return begin;
 }
 pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
@@ -353,7 +359,7 @@ pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
 		*begin = *i;
 	}
 
-
+	*begin = L'\0';
 	return begin;
 }
 
@@ -371,3 +377,4 @@ pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags)
 
 	return strw_remove_range(begin, end, sub_begin, sub_end);
 }
+
