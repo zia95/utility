@@ -89,10 +89,10 @@ typedef const wchar_t* 	pcstrw;
 
 //Locate a string in string
 #define str_substr(str, substr) strstr(str, substr)
-char* str_substrr(const char* str, const char* substr);
+inline char* str_substrr(const char* str, const char* substr);
 
 #define strw_substr(str, substr) wcsstr(str, substr)
-wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
+inline wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
 
 //Locate a char in string
 #define str_subchr(str, subchr)		strchr(str, subchr)
@@ -103,10 +103,10 @@ wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
 
 //Locate characters in string
 #define str_subchrs(str, subchrs) strpbrk(str, subchrs)
-char* str_subchrsr(const char* str, const char* subchrs);
+inline char* str_subchrsr(const char* str, const char* subchrs);
 
 #define strw_subchrs(str, subchrs) wcspbrk(str, subchrs)
-wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
+inline wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
 
 //seprate str by tokens i.e. delimiters
 #define str_token(str, delimiters, contxt) strtok_s(str, delimiters, contxt)
@@ -152,11 +152,11 @@ wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
 #define strw_tombs_state(dest, src, max_count, pstate) wcsrtombs(dest, &src, max_count, pstate)
 
 
-size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count);
-size_t strw_tombsn(pstr* dest, pcstrw src, size_t max_count);
+inline size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count);
+inline size_t strw_tombsn(pstr* dest, pcstrw src, size_t max_count);
 
-size_t str_towcs(pstrw* dest, pcstr src);
-size_t strw_tombs(pstr* dest, pcstrw src);
+inline size_t str_towcs(pstrw* dest, pcstr src);
+inline size_t strw_tombs(pstr* dest, pcstrw src);
 
 
 //#define str_tostrw_state str_towcs_state
@@ -168,8 +168,8 @@ size_t strw_tombs(pstr* dest, pcstrw src);
 #define str_tostrw str_towcs
 #define strw_tostr strw_tombs
 
-pstr str_end(pstr begin);
-pstrw strw_end(pstrw begin);
+inline pstr str_end(pstr begin);
+inline pstrw strw_end(pstrw begin);
 
 
 #ifdef UTL_ERROR
@@ -202,8 +202,8 @@ pstr str_find(pstr begin, pstr end, pcstr mtchchars, byte sfflags);
 
 //remove a char or char range from whole string
 
-pstr str_remove_ch(pstr begin, pstr end, const char c);
-pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c);
+inline pstr str_remove_ch(pstr begin, pstr end, const char c);
+inline pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c);
 
 
 #ifdef __GNUC__
@@ -213,27 +213,27 @@ pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c);
 #endif
 
 
-typedef bool (__cdecl_call* str_rmv_iter_cb)(int ch);
+typedef  bool (__cdecl_call* str_rmv_iter_cb)(int ch);
 
 typedef bool (__cdecl_call* strw_rmv_iter_cb)(wint_t ch);
 
-pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb);
-pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb);
+inline pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb);
+inline pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb);
 
 
 
-pstr str_remove_chs(pstr begin, pstr end, const char* chrs);
-pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs);
+inline pstr str_remove_chs(pstr begin, pstr end, const char* chrs);
+inline pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs);
 
 
-pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end);
-pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end);
+inline pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end);
+inline pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end);
 
 #define str_remove_at(off, end, count) str_remove_range(off, end, off, (off+(count-1)))
 #define strw_remove_at(off, end, count) strw_remove_range(off, end, off, (off+(count-1)))
 
-pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags);
-pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
+inline pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags);
+inline pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
 
 
 

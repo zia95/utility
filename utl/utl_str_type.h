@@ -22,21 +22,23 @@ typedef unsigned long		ulong;
 typedef unsigned long long	ullong;
 
 //parse
-double str_try_todouble	(pcstr str, bool* successful);
-float str_try_tofloat	(pcstr str, bool* successful);
-long str_try_tolong		(pcstr str, int base, bool* successful);
-llong str_try_tollong	(pcstr str, int base, bool* successful);
-ulong str_try_toulong	(pcstr str, int base, bool* successful);
-ullong str_try_toullong	(pcstr str, int base, bool* successful);
+inline double str_try_todouble	(pcstr str, bool* successful);
+inline float str_try_tofloat	(pcstr str, bool* successful);
+inline long str_try_tolong		(pcstr str, int base, bool* successful);
+inline llong str_try_tollong	(pcstr str, int base, bool* successful);
+inline ulong str_try_toulong	(pcstr str, int base, bool* successful);
+inline ullong str_try_toullong	(pcstr str, int base, bool* successful);
 
 //wide
-double strw_try_todouble(pcstrw str, bool* successful);
-float strw_try_tofloat	(pcstrw str, bool* successful);
-long strw_try_tolong	(pcstrw str, int base, bool* successful);
-llong strw_try_tollong	(pcstrw str, int base, bool* successful);
-ulong strw_try_toulong	(pcstrw str, int base, bool* successful);
-ullong strw_try_toullong(pcstrw str, int base, bool* successful);
+inline double strw_try_todouble(pcstrw str, bool* successful);
+inline float strw_try_tofloat	(pcstrw str, bool* successful);
+inline long strw_try_tolong	(pcstrw str, int base, bool* successful);
+inline llong strw_try_tollong	(pcstrw str, int base, bool* successful);
+inline ulong strw_try_toulong	(pcstrw str, int base, bool* successful);
+inline ullong strw_try_toullong(pcstrw str, int base, bool* successful);
 
+#define str_try_toint str_try_tolong
+#define strw_try_tolong strw_try_tolong
 
 #define str_todouble	(str)		str_try_todouble(str, NULL)
 #define str_tofloat		(str)		str_try_tofloat(str, NULL)
@@ -51,6 +53,9 @@ ullong strw_try_toullong(pcstrw str, int base, bool* successful);
 #define strw_tollong	(str, base) strw_try_tollong(str, base, NULL)
 #define strw_toulong	(str, base) strw_try_toulong(str, base, NULL)
 #define strw_toullong	(str, base) strw_try_toullong(str, base, NULL)
+
+#define str_toint str_tolong
+#define strw_toint strw_tolong
 
 #ifdef UTL_STR
 

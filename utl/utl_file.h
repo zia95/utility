@@ -34,8 +34,8 @@
 FILE* file_openw(const wchar_t* file, const wchar_t* mode);
 #endif
 
-bool file_exista(const char* file);
-bool file_existw(const wchar_t* file);
+inline bool file_exista(const char* file);
+inline bool file_existw(const wchar_t* file);
 
 #define file_close(file) fclose(file)
 
@@ -45,11 +45,11 @@ bool file_existw(const wchar_t* file);
 #define file_clear_streamw(wstream) { wint_t c; while ((c = fgetwc(wstream))	!= L'\n' && c != WEOF){} }
 
 
-long file_get_size(FILE* f);
+inline long file_get_size(FILE* f);
 
-bool file_writetexta(const char* file, const char* txt, bool append);
+inline bool file_writetexta(const char* file, const char* txt, bool append);
 
-bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append);
+inline bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append);
 
 
 long file_reada(FILE* _stream, char* buf, long len);

@@ -9,34 +9,34 @@ char* str_substrr(const char* str, const char* substr)
 	return last;
 }
 */
-char* str_substrr(const char* str, const char* substr)
+inline char* str_substrr(const char* str, const char* substr)
 {
 	char* last = NULL;
 	while ((str = str_substr(str, substr))) last = str++;
 	return last;
 }
-wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr)
+inline wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr)
 {
 	wchar_t* last = NULL;
 	while ((str = strw_substr(str, substr))) last = str++;
 	return last;
 }
 
-char* str_subchrsr(const char* str, const char* subchrs)
+inline char* str_subchrsr(const char* str, const char* subchrs)
 {
 	char* last = NULL;
 	while ((str = str_subchrs(str, subchrs))) last = str++;
 	return last;
 }
 
-wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs)
+inline wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs)
 {
 	wchar_t* last = NULL;
 	while ((str = strw_subchrs(str, subchrs))) last = str++;
 	return last;
 }
 
-size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count)
+inline size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count)
 {
 	size_t converted = 0;
 	if (dest != NULL && *dest == NULL && src != NULL && max_count > 0)
@@ -55,7 +55,7 @@ size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count)
 	}
 	return converted;
 }
-size_t strw_tombsn(pstr * dest, pcstrw src, size_t max_count)
+inline size_t strw_tombsn(pstr * dest, pcstrw src, size_t max_count)
 {
 	size_t converted = 0;
 	if (dest != NULL && *dest == NULL && src != NULL && max_count > 0)
@@ -75,7 +75,7 @@ size_t strw_tombsn(pstr * dest, pcstrw src, size_t max_count)
 	return converted;
 }
 
-size_t str_towcs(pstrw * dest, pcstr src)
+inline size_t str_towcs(pstrw * dest, pcstr src)
 {
 	mbstate_t mbst = { 0 };
 
@@ -87,7 +87,7 @@ size_t str_towcs(pstrw * dest, pcstr src)
 
 	return (len > 1) ? str_towcsn(dest, src, len) : 0;
 }
-size_t strw_tombs(pstr * dest, pcstrw src)
+inline size_t strw_tombs(pstr * dest, pcstrw src)
 {
 	mbstate_t mbst = { 0 };
 
@@ -101,13 +101,13 @@ size_t strw_tombs(pstr * dest, pcstrw src)
 }
 
 
-pstr str_end(pstr begin)
+inline pstr str_end(pstr begin)
 {
 	for (; *begin; begin++) {}
 	return begin;
 	//return --begin;
 }
-pstrw strw_end(pstrw begin)
+inline pstrw strw_end(pstrw begin)
 {
 	for (; *begin; begin++) {}
 	return begin;
@@ -239,7 +239,7 @@ pstr str_find(pstr begin, pstr end, pcstr mtchchars, byte sfflags)
 
 //remove a char or char range from whole string
 
-pstr str_remove_ch(pstr begin, pstr end, const char c)
+inline pstr str_remove_ch(pstr begin, pstr end, const char c)
 {
 	for (char* i = begin; i != end; i++, begin++)
 	{
@@ -252,7 +252,7 @@ pstr str_remove_ch(pstr begin, pstr end, const char c)
 	*begin = '\0';
 	return begin;
 }
-pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c)
+inline pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c)
 {
 	for (wchar_t* i = begin; i != end; i++, begin++)
 	{
@@ -266,7 +266,7 @@ pstrw strw_remove_ch(pstrw begin, pstrw end, const wchar_t c)
 	return begin;
 }
 
-pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb)
+inline pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb)
 {
 	for (char* i = begin; i != end; i++, begin++)
 	{
@@ -280,7 +280,7 @@ pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb)
 	*begin = '\0';
 	return begin;
 }
-pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb)
+inline pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb)
 {
 	for (wchar_t* i = begin; i != end; i++, begin++)
 	{
@@ -295,7 +295,7 @@ pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb)
 	return begin;
 }
 
-pstr str_remove_chs(pstr begin, pstr end, const char* chrs)
+inline pstr str_remove_chs(pstr begin, pstr end, const char* chrs)
 {
 	char* mtch;
 	for (char* i = begin; i != end; i++, begin++)
@@ -316,7 +316,7 @@ pstr str_remove_chs(pstr begin, pstr end, const char* chrs)
 	*begin = '\0';
 	return begin;
 }
-pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs)
+inline pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs)
 {
 	wchar_t* mtch;
 	for (wchar_t* i = begin; i != end; i++, begin++)
@@ -338,7 +338,7 @@ pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs)
 	return begin;
 }
 
-pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
+inline pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
 {
 	for (char* i = begin; i != end; i++, begin++)
 	{
@@ -350,7 +350,7 @@ pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
 	*begin = '\0';
 	return begin;
 }
-pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
+inline pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
 {
 	for (wchar_t* i = begin; i != end; i++, begin++)
 	{
@@ -363,14 +363,14 @@ pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
 	return begin;
 }
 
-pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags)
+inline pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags)
 {
 	pstr sub_begin = str_find(begin, end, str, sfflags);
 	pstr sub_end = sub_begin + str_len(str);
 
 	return str_remove_range(begin, end, sub_begin, sub_end);
 }
-pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags)
+inline pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags)
 {
 	pstrw sub_begin = strw_find(begin, end, strw, sfflags);
 	pstrw sub_end = sub_begin + strw_len(strw);

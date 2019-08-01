@@ -18,7 +18,7 @@ void llist_clear(PLList pl)
 	}
 }
 
-void llist_free(PLList pl)
+inline void llist_free(PLList pl)
 {
 	if (pl)
 	{

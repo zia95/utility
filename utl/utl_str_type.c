@@ -1,7 +1,7 @@
 #include"utl_str_type.h"
 
 //parse
-double str_try_todouble(pcstr str, bool* successful)
+inline double str_try_todouble(pcstr str, bool* successful)
 {
 	char* pEnd;
 	double res = strtod(str, &pEnd);
@@ -9,7 +9,7 @@ double str_try_todouble(pcstr str, bool* successful)
 
 	return res;
 }
-float str_try_tofloat(pcstr str, bool* successful)
+inline float str_try_tofloat(pcstr str, bool* successful)
 {
 	char* pEnd;
 	float res = strtof(str, &pEnd);
@@ -17,7 +17,7 @@ float str_try_tofloat(pcstr str, bool* successful)
 
 	return res;
 }
-long str_try_tolong(pcstr str, int base, bool* successful)
+inline long str_try_tolong(pcstr str, int base, bool* successful)
 {
 	char* pEnd;
 	long res = strtol(str, &pEnd, base);
@@ -25,7 +25,7 @@ long str_try_tolong(pcstr str, int base, bool* successful)
 
 	return res;
 }
-llong str_try_tollong(pcstr str, int base, bool* successful)
+inline llong str_try_tollong(pcstr str, int base, bool* successful)
 {
 	char* pEnd;
 	long long res = strtoll(str, &pEnd, base);
@@ -33,7 +33,7 @@ llong str_try_tollong(pcstr str, int base, bool* successful)
 
 	return res;
 }
-ulong str_try_toulong(pcstr str, int base, bool* successful)
+inline ulong str_try_toulong(pcstr str, int base, bool* successful)
 {
 	char* pEnd;
 	unsigned long res = strtoul(str, &pEnd, base);
@@ -41,7 +41,7 @@ ulong str_try_toulong(pcstr str, int base, bool* successful)
 
 	return res;
 }
-ullong str_try_toullong(pcstr str, int base, bool* successful)
+inline ullong str_try_toullong(pcstr str, int base, bool* successful)
 {
 	char* pEnd;
 	unsigned long long res = strtoull(str, &pEnd, base);
@@ -51,7 +51,7 @@ ullong str_try_toullong(pcstr str, int base, bool* successful)
 }
 
 //wide
-double strw_try_todouble(pcstrw str, bool* successful)
+inline double strw_try_todouble(pcstrw str, bool* successful)
 {
 	wchar_t* pEnd;
 	double res = wcstod(str, &pEnd);
@@ -59,7 +59,7 @@ double strw_try_todouble(pcstrw str, bool* successful)
 
 	return res;
 }
-float strw_try_tofloat(pcstrw str, bool* successful)
+inline float strw_try_tofloat(pcstrw str, bool* successful)
 {
 	wchar_t* pEnd;
 	float res = wcstof(str, &pEnd);
@@ -67,7 +67,7 @@ float strw_try_tofloat(pcstrw str, bool* successful)
 
 	return res;
 }
-long strw_try_tolong(pcstrw str, int base, bool* successful)
+inline long strw_try_tolong(pcstrw str, int base, bool* successful)
 {
 	wchar_t* pEnd;
 	long res = wcstol(str, &pEnd, base);
@@ -75,7 +75,7 @@ long strw_try_tolong(pcstrw str, int base, bool* successful)
 
 	return res;
 }
-llong strw_try_tollong(pcstrw str, int base, bool* successful)
+inline llong strw_try_tollong(pcstrw str, int base, bool* successful)
 {
 	wchar_t* pEnd;
 	long long res = wcstoll(str, &pEnd, base);
@@ -83,7 +83,7 @@ llong strw_try_tollong(pcstrw str, int base, bool* successful)
 
 	return res;
 }
-ulong strw_try_toulong(pcstrw str, int base, bool* successful)
+inline ulong strw_try_toulong(pcstrw str, int base, bool* successful)
 {
 	wchar_t* pEnd;
 	unsigned long res = wcstoul(str, &pEnd, base);
@@ -91,7 +91,7 @@ ulong strw_try_toulong(pcstrw str, int base, bool* successful)
 
 	return res;
 }
-ullong strw_try_toullong(pcstrw str, int base, bool* successful)
+inline ullong strw_try_toullong(pcstrw str, int base, bool* successful)
 {
 	wchar_t* pEnd;
 	unsigned long long res = wcstoull(str, &pEnd, base);

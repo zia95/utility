@@ -90,7 +90,7 @@ bool ini_readlinew(PINIFileW_t file)
 	return file->buff_line;
 }
 
-char* ___remove_commentsa(char* begin, char* end, const char* cmnt_chars)
+inline char* ___remove_commentsa(char* begin, char* end, const char* cmnt_chars)
 {
 	if (!cmnt_chars)
 		return end;
@@ -104,7 +104,7 @@ char* ___remove_commentsa(char* begin, char* end, const char* cmnt_chars)
 
 	return end;
 }
-wchar_t* ___remove_commentsw(wchar_t* begin, wchar_t* end, const wchar_t* cmnt_chars)
+inline wchar_t* ___remove_commentsw(wchar_t* begin, wchar_t* end, const wchar_t* cmnt_chars)
 {
 	if (!cmnt_chars)
 		return end;
@@ -119,7 +119,7 @@ wchar_t* ___remove_commentsw(wchar_t* begin, wchar_t* end, const wchar_t* cmnt_c
 	return end;
 }
 
-void ___remove_whitespacesa(char** begin, char** end)
+inline void ___remove_whitespacesa(char** begin, char** end)
 {
 	*begin = str_find(*begin, *end, " ", SF_NOT);
 	if (*begin)
@@ -127,7 +127,7 @@ void ___remove_whitespacesa(char** begin, char** end)
 
 
 }
-void ___remove_whitespacesw(wchar_t** begin, wchar_t** end)
+inline void ___remove_whitespacesw(wchar_t** begin, wchar_t** end)
 {
 	*begin = strw_find(*begin, *end, L" ", SF_NOT);
 	if (*begin)

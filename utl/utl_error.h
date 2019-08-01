@@ -4,8 +4,5 @@
 #include <errno.h>
 
 
-#define assert_exp(expression) assert(expression)
-
-
 
 #endif//!UTL_ERROR

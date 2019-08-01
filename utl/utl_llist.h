@@ -34,7 +34,7 @@ typedef struct _LLIST_
 
 void llist_clear(PLList pl);
 
-void llist_free(PLList pl);
+inline void llist_free(PLList pl);
 
 PLLElement llist_add(PLList pl, void* pdata);
 void llist_add_range(PLList pl, size_t range, void* pfirst, ...);

@@ -22,14 +22,14 @@ FILE* file_openw(const wchar_t* file, const wchar_t* mode)
 }
 #endif
 
-bool file_exista(const char* file)
+inline bool file_exista(const char* file)
 {
 	FILE* f = file_opena(file, "r");
 	if (f) 
 		return file_close(f) == 0;
 	return false;
 }
-bool file_existw(const wchar_t* file)
+inline bool file_existw(const wchar_t* file)
 {
 	FILE* f = file_openw(file, L"r");
 	if (f)
@@ -37,7 +37,7 @@ bool file_existw(const wchar_t* file)
 	return false;
 }
 
-long file_get_size(FILE* f)
+inline long file_get_size(FILE* f)
 {
 	if (f)
 	{
@@ -53,7 +53,7 @@ long file_get_size(FILE* f)
 	return -1;
 }
 
-bool file_writetexta(const char* file, const char* txt, bool append)
+inline bool file_writetexta(const char* file, const char* txt, bool append)
 {
 	FILE* f = file_opena(file, append ? "a" : "w");
 	if (f)
@@ -64,7 +64,7 @@ bool file_writetexta(const char* file, const char* txt, bool append)
 	return false;
 }
 
-bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append)
+inline bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append)
 {
 	FILE* f = file_openw(file, append ? L"a" : L"w");
 	if (f)
