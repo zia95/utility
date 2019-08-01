@@ -34,6 +34,8 @@
 FILE* file_openw(const wchar_t* file, const wchar_t* mode);
 #endif
 
+#define file_close(file) fclose(file)
+
 inline bool file_exista(const char* file)
 {
 	FILE* f = file_opena(file, "r");
@@ -49,7 +51,7 @@ inline bool file_existw(const wchar_t* file)
 	return false;
 }
 
-#define file_close(file) fclose(file)
+
 
 
 
