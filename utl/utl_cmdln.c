@@ -82,7 +82,8 @@ PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser)
 
 				if (sep)
 				{
-					size_t scur_len = str_len(pParser->result.key);
+					size_t scur_len = sep - cur;
+					//size_t scur_len = str_len(pParser->result.key);
 					if (CMDLN_STR_CMPN(cur, pParser->result.key, scur_len) == 0)
 					{
 						pParser->result.val = (cur + scur_len + 1);
@@ -146,7 +147,8 @@ PKeypairW_t cmdln_parsew(PCmdLnParserW_t pParser)
 
 				if (sep)
 				{
-					size_t scur_len = strw_len(pParser->result.key);
+					size_t scur_len = sep - cur;
+					//size_t scur_len = strw_len(pParser->result.key);
 					if (CMDLN_STRW_CMPN(cur, pParser->result.key, scur_len) == 0)
 					{
 						pParser->result.val = (cur + scur_len + 1);

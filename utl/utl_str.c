@@ -329,7 +329,7 @@ pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs)
 
 pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
 {
-	for (char* i = begin; i != end; i++, begin++)
+	for (char* i = begin; i <= end; i++, begin++)
 	{
 		if (i == sub_begin)
 			i = sub_end;
@@ -341,7 +341,7 @@ pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end)
 }
 pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end)
 {
-	for (wchar_t* i = begin; i != end; i++, begin++)
+	for (wchar_t* i = begin; i <= end; i++, begin++)
 	{
 		if (i == sub_begin)
 			i = sub_end;
