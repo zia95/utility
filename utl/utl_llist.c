@@ -18,14 +18,7 @@ void llist_clear(PLList pl)
 	}
 }
 
-inline void llist_free(PLList pl)
-{
-	if (pl)
-	{
-		llist_clear(pl);
-		mem_free(pl);
-	}
-}
+
 
 PLLElement llist_add(PLList pl, void* pdata)
 {

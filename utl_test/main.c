@@ -2,6 +2,7 @@
 #include <errno.h>
 
 
+#pragma comment(lib, "D:/Projects/utl/Debug/utl.lib")
 
 #include "../utl/utl.h"
 #include "../utl/utl_file.h"
@@ -14,7 +15,7 @@
 #include "../utl/utl_cmdln.h"
 
 
-#pragma comment(lib, "D:/Projects/utl/Debug/utl.lib")
+
 
 
 void test_wfile()

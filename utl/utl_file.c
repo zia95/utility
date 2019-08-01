@@ -22,58 +22,7 @@ FILE* file_openw(const wchar_t* file, const wchar_t* mode)
 }
 #endif
 
-inline bool file_exista(const char* file)
-{
-	FILE* f = file_opena(file, "r");
-	if (f) 
-		return file_close(f) == 0;
-	return false;
-}
-inline bool file_existw(const wchar_t* file)
-{
-	FILE* f = file_openw(file, L"r");
-	if (f)
-		return file_close(f) == 0;
-	return false;
-}
 
-inline long file_get_size(FILE* f)
-{
-	if (f)
-	{
-		if (fseek(f, -1, SEEK_END) == 0)
-		{
-			long file_len = ftell(f);
-			if (fseek(f, 0, SEEK_SET) == 0)
-			{
-				return file_len;
-			}
-		}
-	}
-	return -1;
-}
-
-inline bool file_writetexta(const char* file, const char* txt, bool append)
-{
-	FILE* f = file_opena(file, append ? "a" : "w");
-	if (f)
-	{
-		fprintf(f, "%s", txt);
-		return (file_close(f) == 0);
-	}
-	return false;
-}
-
-inline bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append)
-{
-	FILE* f = file_openw(file, append ? L"a" : L"w");
-	if (f)
-	{
-		fwprintf(f, L"%s", txt);
-		return (file_close(f) == 0);
-	}
-	return false;
-}
 
 
 long file_reada(FILE * _stream, char* buf, long len)

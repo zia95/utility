@@ -89,10 +89,10 @@ typedef const wchar_t* 	pcstrw;
 
 //Locate a string in string
 #define str_substr(str, substr) strstr(str, substr)
-inline char* str_substrr(const char* str, const char* substr);
+char* str_substrr(const char* str, const char* substr);
 
 #define strw_substr(str, substr) wcsstr(str, substr)
-inline wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
+wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
 
 //Locate a char in string
 #define str_subchr(str, subchr)		strchr(str, subchr)
@@ -103,10 +103,10 @@ inline wchar_t* strw_substrr(const wchar_t* str, const wchar_t* substr);
 
 //Locate characters in string
 #define str_subchrs(str, subchrs) strpbrk(str, subchrs)
-inline char* str_subchrsr(const char* str, const char* subchrs);
+char* str_subchrsr(const char* str, const char* subchrs);
 
 #define strw_subchrs(str, subchrs) wcspbrk(str, subchrs)
-inline wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
+wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
 
 //seprate str by tokens i.e. delimiters
 #define str_token(str, delimiters, contxt) strtok_s(str, delimiters, contxt)
@@ -152,11 +152,11 @@ inline wchar_t* strw_subchrsr(const wchar_t* str, const wchar_t* subchrs);
 #define strw_tombs_state(dest, src, max_count, pstate) wcsrtombs(dest, &src, max_count, pstate)
 
 
-inline size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count);
-inline size_t strw_tombsn(pstr* dest, pcstrw src, size_t max_count);
+size_t str_towcsn(pstrw* dest, pcstr src, size_t max_count);
+size_t strw_tombsn(pstr* dest, pcstrw src, size_t max_count);
 
-inline size_t str_towcs(pstrw* dest, pcstr src);
-inline size_t strw_tombs(pstr* dest, pcstrw src);
+size_t str_towcs(pstrw* dest, pcstr src);
+size_t strw_tombs(pstr* dest, pcstrw src);
 
 
 //#define str_tostrw_state str_towcs_state
@@ -168,8 +168,16 @@ inline size_t strw_tombs(pstr* dest, pcstrw src);
 #define str_tostrw str_towcs
 #define strw_tostr strw_tombs
 
-inline pstr str_end(pstr begin);
-inline pstrw strw_end(pstrw begin);
+inline pstr str_end(pstr begin)
+{
+	for (; *begin; begin++) {}
+	return begin;
+}
+inline pstrw strw_end(pstrw begin)
+{
+	for (; *begin; begin++) {}
+	return begin;
+}
 
 
 #ifdef UTL_ERROR
@@ -217,23 +225,23 @@ typedef  bool (__cdecl_call* str_rmv_iter_cb)(int ch);
 
 typedef bool (__cdecl_call* strw_rmv_iter_cb)(wint_t ch);
 
-inline pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb);
-inline pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb);
+pstr str_remove_iter(pstr begin, pstr end, str_rmv_iter_cb iter_cb);
+pstrw strw_remove_iter(pstrw begin, pstrw end, strw_rmv_iter_cb iter_cb);
 
 
 
-inline pstr str_remove_chs(pstr begin, pstr end, const char* chrs);
-inline pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs);
+pstr str_remove_chs(pstr begin, pstr end, const char* chrs);
+pstrw strw_remove_chs(pstrw begin, pstrw end, const wchar_t* chrs);
 
 
-inline pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end);
-inline pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end);
+pstr str_remove_range(pstr begin, pstr end, pstr sub_begin, pstr sub_end);
+pstrw strw_remove_range(pstrw begin, pstrw end, pstrw sub_begin, pstrw sub_end);
 
 #define str_remove_at(off, end, count) str_remove_range(off, end, off, (off+(count-1)))
 #define strw_remove_at(off, end, count) strw_remove_range(off, end, off, (off+(count-1)))
 
-inline pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags);
-inline pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
+pstr str_remove(pstr begin, pstr end, pcstr str, byte sfflags);
+pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
 
 
 
