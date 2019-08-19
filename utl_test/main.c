@@ -158,7 +158,7 @@ void test_strw_remove_chrs()
 
 void  __llist_iter_cb(PLList pl, size_t idx, PLLElement pelm)
 {
-	printf("[%d] [%s]\n", idx, pelm->pdata);
+	printf("[%d] [%s]\n", idx, (char*)pelm->pdata);
 }
 
 void test_llist()
@@ -329,16 +329,56 @@ int test_cmdln()
 }
 
 
+void test_str_tostr_decimal()
+{
+	char buf[128];
+	
+	str_tostr_long(buf, _countof(buf), 101099);
 
+	printf("buf: %s\n", buf);
+}
 
+void test_strw_tostr_decimal()
+{
+	wchar_t buf[128];
 
+	strw_tostr_long(buf, _countof(buf), 101099);
 
+	printf("buf: %ls\n", buf);
+}
+
+void test_str_format()
+{
+	char buf[128];
+
+	str_format(buf, _countof(buf), "%d", 101099);
+
+	printf("buf: %s\n", buf);
+}
+
+void test_strw_format()
+{
+	wchar_t buf[128];
+
+	strw_format(buf, _countof(buf), L"%d", 101099);
+
+	printf("buf: %ls\n", buf);
+}
 
 
 int main()
 {
-	test_str_remove_chrs();
-	test_strw_remove_chrs();
+	test_str_tostr_decimal();
+	test_strw_tostr_decimal();
+
+
+
+	//test_str_format();
+	//test_strw_format();
+
+
+	//test_str_remove_chrs();
+	//test_strw_remove_chrs();
 
 
 	/*test_cmdln();

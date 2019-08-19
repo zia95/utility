@@ -5,8 +5,10 @@
 
 
 #ifndef UTL_STR
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <wchar.h>
 
 typedef char* pstr;
 typedef wchar_t* pstrw;
@@ -122,38 +124,47 @@ inline ullong strw_try_toullong(pcstrw str, int base, bool* successful)
 }
 
 #define str_try_toint str_try_tolong
-#define strw_try_tolong strw_try_tolong
+#define strw_try_toint strw_try_tolong
 
-#define str_todouble	(str)		str_try_todouble(str, NULL)
-#define str_tofloat		(str)		str_try_tofloat(str, NULL)
-#define str_tolong		(str, base) str_try_tolong(str, base, NULL)
-#define str_tollong		(str, base) str_try_tollong(str, base, NULL)
-#define str_toulong		(str, base) str_try_toulong(str, base, NULL)
-#define str_toullong	(str, base) str_try_toullong(str, base, NULL)
+#define str_todouble(str)			str_try_todouble(str, NULL)
+#define str_tofloat(str)			str_try_tofloat(str, NULL)
+#define str_tolong(str, base)		str_try_tolong(str, base, NULL)
+#define str_tollong(str, base)		str_try_tollong(str, base, NULL)
+#define str_toulong(str, base)		str_try_toulong(str, base, NULL)
+#define str_toullong(str, base)		str_try_toullong(str, base, NULL)
 
-#define strw_todouble	(str)		strw_try_todouble(str, NULL)
-#define strw_tofloat	(str)		strw_try_tofloat(str, NULL)
-#define strw_tolong		(str, base) strw_try_tolong(str, base, NULL)
-#define strw_tollong	(str, base) strw_try_tollong(str, base, NULL)
-#define strw_toulong	(str, base) strw_try_toulong(str, base, NULL)
-#define strw_toullong	(str, base) strw_try_toullong(str, base, NULL)
+#define strw_todouble(str)			strw_try_todouble(str, NULL)
+#define strw_tofloat(str)			strw_try_tofloat(str, NULL)
+#define strw_tolong(str, base)		strw_try_tolong(str, base, NULL)
+#define strw_tollong(str, base)		strw_try_tollong(str, base, NULL)
+#define strw_toulong(str, base)		strw_try_toulong(str, base, NULL)
+#define strw_toullong(str, base)	strw_try_toullong(str, base, NULL)
 
 #define str_toint str_tolong
 #define strw_toint strw_tolong
 
-#ifdef UTL_STR
+#ifndef str_format
+#define str_format(str, len, fmt, ...)		snprintf(str, len, fmt, __VA_ARGS__)
+#endif // !str_format
+
+#ifndef strw_format
+#define strw_format(str, len, fmt, ...)		swprintf(str, len, fmt, __VA_ARGS__)
+#endif // !strw_format
+
+
+
+
 
 // string to type x
-#define str_tostr_float		(str, len, f)	str_format(str, len, "%f", f)
-#define str_tostr_decimal	(str, len, d)	str_format(str, len, "%d", d)
-#define str_tostr_hex		(str, len, x)	str_format(str, len, "%x", x)
-#define str_tostr_octate	(str, len, o)	str_format(str, len, "%o", o)
+#define str_tostr_float(str, len, f)	str_format(str, len, "%f", f)
+#define str_tostr_long(str, len, d)		str_format(str, len, "%d", d)
+#define str_tostr_hex(str, len, x)		str_format(str, len, "%x", x)
+#define str_tostr_octate(str, len, o)	str_format(str, len, "%o", o)
 
-#define strw_tostr_float	(str, len, f)	strw_format(str, len, L"%f", f)
-#define strw_tostr_decimal	(str, len, d)	strw_format(str, len, L"%d", d)
-#define strw_tostr_hex		(str, len, x)	strw_format(str, len, L"%x", x)
-#define strw_tostr_octate	(str, len, o)	strw_format(str, len, L"%o", o)
-#endif
+#define strw_tostr_float(str, len, f)	strw_format(str, len, L"%f", f)
+#define strw_tostr_long(str, len, d)	strw_format(str, len, L"%d", d)
+#define strw_tostr_hex(str, len, x)		strw_format(str, len, L"%x", x)
+#define strw_tostr_octate(str, len, o)	strw_format(str, len, L"%o", o)
 
 
 

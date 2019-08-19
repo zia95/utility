@@ -258,12 +258,12 @@ pstrw strw_remove(pstrw begin, pstrw end, pcstrw strw, byte sfflags);
 #endif
 
 
-#define str_scan			sscanf
-#define strw_scan			swscanf
+#define str_scan(str, fmt, ...)				sscanf(str, fmt, __VA_ARGS__)
+#define strw_scan(str, fmt, ...)			swscanf(str, fmt, __VA_ARGS__)
 
 //format string
-#define str_format			snprintf
-#define strw_format			swprintf
+#define str_format(str, len, fmt, ...)		snprintf(str, len, fmt, __VA_ARGS__)
+#define strw_format(str, len, fmt, ...)		swprintf(str, len, fmt, __VA_ARGS__)
 
 
 
