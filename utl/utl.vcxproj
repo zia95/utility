@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="utl_asciigen.c" />
     <ClCompile Include="utl_cmdln.c" />
     <ClCompile Include="utl_env.c" />
     <ClCompile Include="utl_file.c" />
@@ -164,6 +165,7 @@
     <ClCompile Include="utl_type.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="utl_asciigen.h" />
     <ClInclude Include="utl_assert.h" />
     <ClInclude Include="utl.h" />
     <ClInclude Include="utl_cmdln.h" />

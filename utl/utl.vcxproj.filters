@@ -57,6 +57,9 @@
     <ClInclude Include="utl_error.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="utl_asciigen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="utl_locale.c">
@@ -90,6 +93,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="utl_cmdln.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="utl_asciigen.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

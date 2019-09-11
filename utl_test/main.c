@@ -13,6 +13,7 @@
 #include "../utl/utl_llist.h"
 #include "../utl/utl_ini.h"
 #include "../utl/utl_cmdln.h"
+#include "../utl/utl_asciigen.h"
 
 
 
@@ -365,11 +366,27 @@ void test_strw_format()
 	printf("buf: %ls\n", buf);
 }
 
+void test_gen_ascii()
+{
+	char buf[61];
+	
+	memset(&buf, 0, sizeof(buf));
+
+
+	asciigen_seed();
+	asciigen_gen_char_seq(buf, 60, GC_LOWER | GC_UPPER | GC_NUMBER | GC_SYMBOL);
+
+	printf("genpass[%d]: %s\n", strlen(buf), buf);
+}
 
 int main()
 {
-	test_str_tostr_decimal();
-	test_strw_tostr_decimal();
+
+	test_gen_ascii();
+
+
+	//test_str_tostr_decimal();
+	//test_strw_tostr_decimal();
 
 
 
