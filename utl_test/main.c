@@ -382,7 +382,7 @@ void test_gen_ascii()
 int main()
 {
 
-	test_gen_ascii();
+	//test_gen_ascii();
 
 
 	//test_str_tostr_decimal();
@@ -398,7 +398,9 @@ int main()
 	//test_strw_remove_chrs();
 
 
-	/*test_cmdln();
+	test_cmdln();
+
+	/*
 
 
 	test_str_remove();

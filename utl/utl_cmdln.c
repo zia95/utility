@@ -57,60 +57,36 @@ PKeypairA_t cmdln_parsea(PCmdLnParserA_t pParser)
 	if (pParser->argc_idx < pParser->argc)
 	{
 		char* cur = pParser->argv[pParser->argc_idx];
-
+		int ncur = str_len(cur);
 
 		for (int i = 0; i < pParser->sargc; i++)
 		{
 			pParser->result.kidx = i;
 			pParser->result.key = pParser->sargv[i];
+			int nscur = str_len(pParser->result.key);
 
-			if (CMDLN_STR_CMP(cur, pParser->result.key) == 0)
+			if (ncur >= nscur)
 			{
-				if (++pParser->argc_idx < pParser->argc)
+				if (CMDLN_STR_CMPN(cur, pParser->result.key, nscur) == 0)
 				{
-					pParser->result.val = pParser->argv[pParser->argc_idx];
-					--pParser->argc_idx;
-				}
-
-				return cmdln_parser_get_result(pParser);
-			}
-			else
-			{
-				char* sep = str_find(cur, str_end(cur), ":=", SF_NONE);
-
-				
-
-				if (sep)
-				{
-					size_t scur_len = sep - cur;
-					//size_t scur_len = str_len(pParser->result.key);
-					if (CMDLN_STR_CMPN(cur, pParser->result.key, scur_len) == 0)
+					if (ncur == nscur)//form --> <arg1> <arg2>
 					{
-						pParser->result.val = (cur + scur_len + 1);
-						return cmdln_parser_get_result(pParser);
-						/*
-						//buffer must be created because 'argv' memory is write protected (i.e. read-only).
-
-						// checking buffer len ---- memory clear ---- mem reloc --- it will increase performance. maybe?? 
-						// nonetheless lets just go with free() and alloc()
-						if (pParser->buffer)
+						if (++pParser->argc_idx < pParser->argc)
 						{
-							str_free(pParser->buffer);
-							pParser->buffer = NULL;
+							pParser->result.val = pParser->argv[pParser->argc_idx];
+							--pParser->argc_idx;
 						}
 
-
-						cur = (cur + scur_len + 1);// adding '+1' for seprator
-						pParser->buff_len = str_len(cur);
-
-						if (pParser->buff_len <= 0)
-							return NULL;
-
-						pParser->buffer = str_dup(cur, pParser->buff_len);
-
-						pParser->result.val = pParser->buffer;
 						return cmdln_parser_get_result(pParser);
-						*/
+					}
+					else//form --> <arg1> where <arg1> --> key:val OR key=val
+					{
+						pParser->result.val = (cur + nscur);
+						if (*pParser->result.val == '=' || *pParser->result.val == ':')
+						{
+							++pParser->result.val;
+							return cmdln_parser_get_result(pParser);
+						}
 					}
 				}
 			}
@@ -125,57 +101,37 @@ PKeypairW_t cmdln_parsew(PCmdLnParserW_t pParser)
 	if (pParser->argc_idx < pParser->argc)
 	{
 		wchar_t* cur = pParser->argv[pParser->argc_idx];
+		int ncur = strw_len(cur);
 
 
 		for (int i = 0; i < pParser->sargc; i++)
 		{
 			pParser->result.kidx = i;
 			pParser->result.key = pParser->sargv[i];
-			if (CMDLN_STRW_CMP(cur, pParser->result.key) == 0)//form --> <arg1> <arg2>
-			{
-				if (++pParser->argc_idx < pParser->argc)
-				{
-					pParser->result.val = pParser->argv[pParser->argc_idx];
-					--pParser->argc_idx;
-				}
+			int nscur = strw_len(pParser->result.key);
 
-				return cmdln_parser_get_result(pParser);
-			}
-			else//form --> <arg1> where <arg1> --> key:val OR key=val
+			if (ncur >= nscur)
 			{
-				wchar_t* sep = strw_find(cur, strw_end(cur), L":=", SF_NONE);
-
-				if (sep)
+				if (CMDLN_STRW_CMPN(cur, pParser->result.key, nscur) == 0)
 				{
-					size_t scur_len = sep - cur;
-					//size_t scur_len = strw_len(pParser->result.key);
-					if (CMDLN_STRW_CMPN(cur, pParser->result.key, scur_len) == 0)
+					if (ncur == nscur)//form --> <arg1> <arg2>
 					{
-						pParser->result.val = (cur + scur_len + 1);
-						return cmdln_parser_get_result(pParser);
-
-						/*
-						//buffer must be created because 'argv' memory is write protected (i.e. read-only). 
-						// checking buffer len ---- memory clear ---- mem reloc --- it will increase performance. maybe??
-						// nonetheless lets just go with free() and alloc()
-						if (pParser->buffer)
+						if (++pParser->argc_idx < pParser->argc)
 						{
-							strw_free(pParser->buffer);
-							pParser->buffer = NULL;
+							pParser->result.val = pParser->argv[pParser->argc_idx];
+							--pParser->argc_idx;
 						}
 
-						cur = (cur + scur_len + 1);// adding '+1' for seprator
-						pParser->buff_len = strw_len(cur);
-
-						if (pParser->buff_len <= 0)
-							return NULL;
-
-
-						pParser->buffer = strw_dup(cur, pParser->buff_len);
-
-						pParser->result.val = pParser->buffer;
 						return cmdln_parser_get_result(pParser);
-						*/
+					}
+					else//form --> <arg1> where <arg1> --> key:val OR key=val
+					{
+						pParser->result.val = (cur + nscur);
+						if (*pParser->result.val == L'=' || *pParser->result.val == L':')
+						{
+							++pParser->result.val;
+							return cmdln_parser_get_result(pParser);
+						}
 					}
 				}
 			}

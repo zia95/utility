@@ -51,9 +51,6 @@ typedef struct COMMAND_LINE_PARSERA
 
 	int argc_idx;
 
-	//size_t buff_len;
-	//char* buffer;
-
 	KeypairA_t result;
 } CmdLnParserA_t, * PCmdLnParserA_t;
 typedef struct COMMAND_LINE_PARSERW
@@ -66,9 +63,6 @@ typedef struct COMMAND_LINE_PARSERW
 
 	int argc_idx;
 
-	//size_t buff_len;
-	//wchar_t* buffer;
-
 	KeypairW_t result;
 } CmdLnParserW_t, * PCmdLnParserW_t;
 
@@ -77,6 +71,11 @@ PCmdLnParserA_t cmdln_parser_newa(int argc, char** argv, int sargc, const char**
 PCmdLnParserW_t cmdln_parser_neww(int argc, wchar_t** argv, int sargc, const wchar_t** sargv);
 
 
+#define cmdln_argv(pParser) pParser->argv
+#define cmdln_argc(pParser) pParser->argc
+
+#define cmdln_sargv(pParser) pParser->sargv
+#define cmdln_sargc(pParser) pParser->sargc
 
 #define cmdln_parser_get_result(pParser) &pParser->result
 #define cmdln_parser_finished(pParser) !(pParser->argc_idx < pParser->argc)

@@ -168,16 +168,9 @@ size_t strw_tombs(pstr* dest, pcstrw src);
 #define str_tostrw str_towcs
 #define strw_tostr strw_tombs
 
-inline pstr str_end(pstr begin)
-{
-	for (; *begin; begin++) {}
-	return begin;
-}
-inline pstrw strw_end(pstrw begin)
-{
-	for (; *begin; begin++) {}
-	return begin;
-}
+ 
+pstr str_end(pstr begin);
+pstrw strw_end(pstrw begin);
 
 
 #ifdef UTL_ERROR

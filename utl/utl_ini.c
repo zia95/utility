@@ -96,7 +96,7 @@ inline char* ___remove_commentsa(char* begin, char* end, const char* cmnt_chars)
 		return end;
 
 	char* endpt_cc = str_find(begin, end, cmnt_chars, SF_NONE);
-	if (endpt_cc)
+	if ((endpt_cc - 1) != '\\')//make sure its not escape seq
 	{
 		*endpt_cc = '\0';
 		return (begin == endpt_cc) ? begin : --endpt_cc;
@@ -110,7 +110,7 @@ inline wchar_t* ___remove_commentsw(wchar_t* begin, wchar_t* end, const wchar_t*
 		return end;
 
 	wchar_t* endpt_cc = strw_find(begin, end, cmnt_chars, SF_NONE);
-	if (endpt_cc)
+	if ((endpt_cc - 1) != L'\\')//make sure its not escape seq
 	{
 		*endpt_cc = L'\0';
 		return (begin == endpt_cc) ? begin : --endpt_cc;

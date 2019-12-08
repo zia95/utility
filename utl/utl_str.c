@@ -102,6 +102,17 @@ size_t strw_tombs(pstr * dest, pcstrw src)
 
 
 
+pstr str_end(pstr begin)
+{
+	for (; *begin; begin++) {}
+	return begin;
+}
+pstrw strw_end(pstrw begin)
+{
+	for (; *begin; begin++) {}
+	return begin;
+}
+
 
 //find char(s) from string
 
