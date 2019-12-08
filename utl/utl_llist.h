@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
-
+#include "utl_env.h"
 
 typedef struct _LLELEMENT_
 {
@@ -34,7 +34,7 @@ typedef struct _LLIST_
 
 void llist_clear(PLList pl);
 
-inline void llist_free(PLList pl)
+__inline void llist_free(PLList pl)
 {
 	if (pl)
 	{
@@ -57,11 +57,7 @@ void* llist_remove_elm(PLList pl, PLLElement pelm);
 
 
 
-#ifdef __GNUC__
-#define __cdecl_call __attribute__ ((__cdecl__))
-#else
-#define __cdecl_call __cdecl
-#endif
+
 
 
 

@@ -20,4 +20,19 @@
 #endif
 #endif
 
+
+#if __GNUC__
+
+#define __inline static inline
+#define __cdecl_call __attribute__ ((__cdecl__))
+
+#else
+
+#define __inline inline
+#define __cdecl_call __cdecl
+
+#endif //__GNUC__
+
+
+
 #endif //!UTL_ENV

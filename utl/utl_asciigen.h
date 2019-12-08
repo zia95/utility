@@ -2,7 +2,8 @@
 #define UTL_ASCIIGEN
 
 #include "utl_rand.h"
-
+#include <stdbool.h>
+#include "utl_env.h"
 
 // functions to be used...
 #define ___srand(SEED) rand_set_seed(SEED)
@@ -53,7 +54,7 @@
 #define asciigen_gen_char_special_s4()	___rand(CHAR_SPECIAL_FOUR_OFF_BEG,	CHAR_SPECIAL_FOUR_OFF_END)
 
 
-inline char asciigen_gen_char_special()
+__inline char asciigen_gen_char_special()
 {
 	switch (___rand(0, 3))
 	{
@@ -88,7 +89,7 @@ inline char asciigen_gen_char_special()
 
 
 
-inline char ___get_rand_type(byte gc_flags)
+__inline char ___get_rand_type(byte gc_flags)
 {
 	char typev[4];
 	int typec = -1;
@@ -120,7 +121,7 @@ inline char ___get_rand_type(byte gc_flags)
 	return typec != -1 ? typev[typec] : RET_ERRNO_GEN_CHAR_ARG_NO_TYPE;
 }
 
-inline char asciigen_gen_char(byte gc_flags)
+__inline char asciigen_gen_char(byte gc_flags)
 {
 	switch (___get_rand_type(gc_flags))
 	{
@@ -136,7 +137,7 @@ inline char asciigen_gen_char(byte gc_flags)
 //#define asciigen_gen_char_seq(bufbeg, bufend, gc_flags) for (; bufbeg != bufend; bufbeg++) { *bufbeg = asciigen_gen_char(gc_flags); if (*bufbeg == RET_ERRNO_GEN_CHAR_ARG_NO_TYPE) break; }
 	
 
-inline bool asciigen_gen_char_seq(char* bufbeg, size_t count, byte gc_flags)
+__inline bool asciigen_gen_char_seq(char* bufbeg, size_t count, byte gc_flags)
 {
 	char* bufend = bufbeg + count;
 	for (; bufbeg != bufend; bufbeg++) 
@@ -147,19 +148,6 @@ inline bool asciigen_gen_char_seq(char* bufbeg, size_t count, byte gc_flags)
 	}
 	return true;
 }
-/*
-inline void asciigen_gen_char_seq(char* buffer, size_t size, byte gc_flags)
-{
-	for (size_t i = 0; i < size; i++)
-	{
-		buffer[i] = asciigen_gen_char(gc_flags);
-		if (buffer[i] == RET_ERRNO_GEN_CHAR_ARG_NO_TYPE)
-			return;
-	}
-}
-*/
-
-
 
 
 #endif // !UTL_ASCIIGEN

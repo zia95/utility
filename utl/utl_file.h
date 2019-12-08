@@ -8,6 +8,7 @@
 #include "utl_mem.h"
 #include <wchar.h>
 #include "utl_str.h"
+#include "utl_env.h"
 
 
 #pragma warning(disable:4996)//unsafe warn
@@ -36,14 +37,14 @@ FILE* file_openw(const wchar_t* file, const wchar_t* mode);
 
 #define file_close(file) fclose(file)
 
-inline bool file_exista(const char* file)
+__inline bool file_exista(const char* file)
 {
 	FILE* f = file_opena(file, "r");
 	if (f)
 		return file_close(f) == 0;
 	return false;
 }
-inline bool file_existw(const wchar_t* file)
+__inline bool file_existw(const wchar_t* file)
 {
 	FILE* f = file_openw(file, L"r");
 	if (f)
@@ -59,7 +60,7 @@ inline bool file_existw(const wchar_t* file)
 #define file_clear_streamw(wstream) { wint_t c; while ((c = fgetwc(wstream))	!= L'\n' && c != WEOF){} }
 
 
-inline long file_get_size(FILE* f)
+__inline long file_get_size(FILE* f)
 {
 	if (f)
 	{
@@ -75,7 +76,7 @@ inline long file_get_size(FILE* f)
 	return -1;
 }
 
-inline bool file_writetexta(const char* file, const char* txt, bool append)
+__inline bool file_writetexta(const char* file, const char* txt, bool append)
 {
 	FILE* f = file_opena(file, append ? "a" : "w");
 	if (f)
@@ -86,7 +87,7 @@ inline bool file_writetexta(const char* file, const char* txt, bool append)
 	return false;
 }
 
-inline bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append)
+__inline bool file_writetextw(const wchar_t* file, const wchar_t* txt, bool append)
 {
 	FILE* f = file_openw(file, append ? L"a" : L"w");
 	if (f)

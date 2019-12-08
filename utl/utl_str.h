@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <wchar.h>
-
+#include "utl_env.h"
 
 #include "utl_mem.h"
 
